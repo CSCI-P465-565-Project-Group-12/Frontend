@@ -1,0 +1,33 @@
+.event-preview-card {
+  display: block;
+  position: relative;
+  width: 80%;
+  height: 100%;
+  background-color: rgb(22, 27, 51);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: 2px solid #caf0f8;
+  padding: 1rem;
+}
+.event-date {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #6b6b6b;
+  color: rgb(202, 240, 248);
+  width: 20%;
+  font-size: 1.5rem;
+  font-weight: 900;
+  height: 100%;
+  cursor: pointer;
+}
+.event-date h2 {
+  text-align: center;
+  margin-bottom: 0;
+}
+.event-date h4 {
+  text-align: center;
+  margin: 0;
+}
+.event-date:hover {
+  transition: 1s ease-in-out;
+}
