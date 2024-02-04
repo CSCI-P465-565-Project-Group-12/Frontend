@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+
+.mobile-navbar {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 2em;
+}
+.mobile-logo {
+  display: flex;
+  text-align: center;
+}
+.mobile-logo h1 {
+  font-family: "Pacifico", cursive;
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #90e0ef;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.toggle-btn {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 2em;
+  color: #90e0ef;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* sidebar */
+
+.sidebar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #161b33;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  z-index: 100;
+}
+.sidebar.active {
+  left: 0;
+  transition: 0.5s;
+}
+.sidebar.inactive {
+  left: -100%;
+  transition: 0.5s;
+}
+.sidebar-logo {
+  display: flex;
+  position: absolute;
+  top: 2em;
+}
+.sidebar-logo h1 {
+  font-family: "Pacifico", cursive;
+  text-align: center;
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #90e0ef;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.sidebar-navlinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  margin-top: 1em;
+}
+.sidebar-register-login-btns {
+  display: flex;
+  position: absolute;
+  bottom: 2em;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  padding: 0 2em;
+}
+
+.sidebar-navlinks a {
+  font-size: 1.2em;
+  font-weight: 500;
+  color: #90e0ef;
+  text-decoration: none;
+  transition: color 0.25s;
+  cursor: pointer;
+}
+
+.close-btn {
+  display: flex;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  font-size: 2em;
+  color: #90e0ef;
+  background-color: transparent;
+  cursor: pointer;
+}

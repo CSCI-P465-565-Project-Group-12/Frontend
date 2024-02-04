@@ -41,3 +41,15 @@
   height: 100%;
   object-fit: contain;
 }
+
+@media (max-width: 768px) {
+  .hero-section-container {
+    flex-direction: column;
+  }
+  .hero-section-text {
+    width: 100%;
+  }
+  .hero-section-img {
+    width: 100%;
+  }
+}
