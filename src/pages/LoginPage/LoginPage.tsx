@@ -3,15 +3,18 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import signUpImg from "../../assets/signup-poster.png";
 import "./LoginPage.css";
 import { useState } from "react";
+import { useLocation } from "react-router";
 
 const LoginPage: React.FC = () => {
   const roleOptions = ["User", "Admin"];
-  const [isRegister, setIsRegister] = useState(false);
+  const location = useLocation();
+  const linkFor = location.state.linkFor?.toString() || "login";
+  const [formToggler, setFormToggler] = useState<string>(linkFor);
   return (
     <>
       <Navbar />
       <div className="login-page">
-        {isRegister ? <h1>Register</h1> : <h1>Login</h1>}
+        {formToggler === "register" ? <h1>Register</h1> : <h1>Login</h1>}
 
         <div className="login-registeration-box">
           <div className="login-poster">
@@ -19,7 +22,7 @@ const LoginPage: React.FC = () => {
           </div>
           <div className="login-registeration-form">
             <div className="form-box">
-              {isRegister ? (
+              {formToggler === "register" ? (
                 <>
                   <label htmlFor="name">Name</label>
                   <input type="text" id="name" />
@@ -32,7 +35,9 @@ const LoginPage: React.FC = () => {
                   <button className="register-btn">Register</button>
                   <div className="register-link">
                     <p>Already have an account?</p>
-                    <button onClick={() => setIsRegister(false)}>Login</button>
+                    <button onClick={() => setFormToggler("login")}>
+                      Login
+                    </button>
                   </div>
                 </>
               ) : (
@@ -58,7 +63,7 @@ const LoginPage: React.FC = () => {
                     <p>Don't have an account?</p>
                     <button
                       onClick={() => {
-                        setIsRegister(true);
+                        setFormToggler("register");
                       }}
                     >
                       Register

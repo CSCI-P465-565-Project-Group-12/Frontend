@@ -30,10 +30,10 @@ const Navbar = () => {
             <a href="/">Contact</a>
           </div>
           <div className="register-login-btns">
-            <a href="/" id="register-btn">
+            <Link to="/login" id="register-btn" state={{ linkFor: "register" }}>
               Register
-            </a>
-            <Link to="/login" id="login-btn">
+            </Link>
+            <Link to="/login" id="login-btn" state={{ linkFor: "login" }}>
               Login
             </Link>
           </div>
