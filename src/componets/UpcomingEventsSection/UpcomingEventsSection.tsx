@@ -2,11 +2,6 @@ import "./UpcomingEventsSection.css";
 import upcomingEventImg from "../../assets/upcoming-events.png";
 import EventPreviewCard from "../UI/EventPreviewCard/EventPreviewCard";
 const UpcomingEventsSection = () => {
-  /* make a dummy array of events of interface IEventDetails {
-  title: string;
-  date: string;
-  venue: string;
-}*/
   const events = [
     {
       title: "Pokemon Event",
@@ -34,7 +29,7 @@ const UpcomingEventsSection = () => {
       venue: "Indianapolis Motor Speedway",
     },
     {
-      title: "Formula 1 Heineken Dutch Grand Prix",
+      title: "Dutch Grand Prix",
       date: "1st Sept 2024",
       venue: "Zandvoort, Netherlands",
     },

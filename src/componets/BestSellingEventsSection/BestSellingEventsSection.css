@@ -1,0 +1,25 @@
+.best-selling-events-section {
+  padding: 5rem 0;
+  height: 100vh;
+}
+
+.best-selling-events-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.best-selling-events-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+@media screen and (max-width: 768px) {
+  .best-selling-events-section {
+    height: 100%;
+  }
+  .best-selling-events-row {
+    flex-direction: column;
+  }
+}

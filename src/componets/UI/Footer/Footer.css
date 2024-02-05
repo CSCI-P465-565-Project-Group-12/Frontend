@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+footer {
+  padding: 20px 0;
+  text-align: center;
+
+  height: 80px;
+  border-top: 1px solid #caf0f8;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  margin: auto 2rem;
+}
+.footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.footer-logo h1 {
+  font-family: "Pacifico", cursive;
+  font-size: 2.5rem;
+  color: #90e0ef;
+  cursor: pointer;
+}
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+.footer-navlinks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.footer-navlinks a {
+  font-size: 1rem;
+  color: #caf0f8;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+.footer-socials {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.footer-socials i {
+  font-size: 1.5rem;
+  color: #caf0f8;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.footer-copyright {
+  font-size: 1rem;
+  color: #caf0f8;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  footer {
+    height: 100px;
+  }
+  .footer-container {
+    flex-direction: column;
+  }
+  .footer-links {
+    width: 100%;
+  }
+  .footer-navlinks {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .footer-socials {
+    width: 100%;
+  }
+  .footer-socials i {
+    font-size: 2rem;
+  }
+  .footer-logo h1 {
+    font-size: 3rem;
+  }
+}

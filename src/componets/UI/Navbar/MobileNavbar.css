@@ -3,7 +3,6 @@
 .mobile-navbar {
   display: flex;
   position: relative;
-  width: 100%;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -55,7 +54,7 @@
 }
 .sidebar.inactive {
   left: -100%;
-  transition: 0.5s;
+  transition: cubic-bezier(1, 0, 0, 1);
 }
 .sidebar-logo {
   display: flex;

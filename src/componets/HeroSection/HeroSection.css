@@ -14,7 +14,6 @@
 .hero-section-text {
   display: flex;
   /* position: absolute; */
-
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -28,6 +27,17 @@
   margin: 0;
 }
 
+.hero-section-text p {
+  padding-right: 2rem;
+  color: #caf0f8;
+  font-weight: 500;
+  margin: 0;
+  text-align: justify;
+  white-space: wrap;
+}
+.lets-get-started-btn {
+  margin-top: 20px;
+}
 .hero-section-img {
   display: flex;
   flex-direction: column;
@@ -48,6 +58,12 @@
   }
   .hero-section-text {
     width: 100%;
+  }
+  .hero-section-text h1 {
+    font-size: 3rem;
+  }
+  .hero-section-text p {
+    padding: 0 10px;
   }
   .hero-section-img {
     width: 100%;
