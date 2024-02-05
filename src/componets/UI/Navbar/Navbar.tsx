@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Navbar.css";
 import MobileNavbar from "./MobileNavbar";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -23,7 +24,7 @@ const Navbar = () => {
             <h1>BashBosss</h1>
           </div>
           <div className="navlinks">
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
             <a href="/">Events</a>
             <a href="/">Services</a>
             <a href="/">Contact</a>
@@ -32,9 +33,9 @@ const Navbar = () => {
             <a href="/" id="register-btn">
               Register
             </a>
-            <a href="/" id="login-btn">
+            <Link to="/login" id="login-btn">
               Login
-            </a>
+            </Link>
           </div>
         </div>
       )}
