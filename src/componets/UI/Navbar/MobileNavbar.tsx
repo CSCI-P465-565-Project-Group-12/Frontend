@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./MobileNavbar.css";
+import { Link } from "react-router-dom";
 
 interface ISideBarProps {
   closeSetter: () => void;
@@ -49,25 +50,14 @@ const SideBar: React.FC<ISideBarProps> = (props) => {
         <i className="bi bi-x"></i>
       </div>
       <div className="sidebar-register-login-btns">
-        <a href="/" id="register-btn">
+        <Link to="/login" id="register-btn" state={{ linkFor: "register" }}>
           Register
-        </a>
-        <a href="/" id="login-btn">
+        </Link>
+        <Link to="/login" id="login-btn" state={{ linkFor: "login" }}>
           Login
-        </a>
+        </Link>
       </div>
     </div>
   );
 };
 export default MobileNavbar;
-
-{
-  /* <div className="login-register-btns-mobile">
-  <a href="/" id="register-btn">
-    Register
-  </a>
-  <a href="/" id="login-btn">
-    Login
-  </a>
-</div>; */
-}
