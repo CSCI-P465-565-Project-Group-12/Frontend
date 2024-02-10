@@ -39,6 +39,7 @@
   color: #90e0ef;
   text-decoration: none;
   transition: color 0.25s;
+  cursor: pointer;
 }
 .register-login-btns {
   display: flex;
@@ -53,6 +54,7 @@
   font-weight: 500;
   text-decoration: none;
   transition: color 0.25s;
+  cursor: pointer;
 }
 #login-btn {
   background-color: #00b4d8;

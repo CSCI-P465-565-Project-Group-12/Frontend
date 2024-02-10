@@ -21,7 +21,7 @@ const Navbar = () => {
       ) : (
         <div className="navbar">
           <div className="logo">
-            <h1>BashBosss</h1>
+            <h1>BashBoss</h1>
           </div>
           <div className="navlinks">
             <Link to="/">Home</Link>

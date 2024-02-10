@@ -87,6 +87,7 @@
   gap: 1em;
   width: 100%;
   padding: 0 2em;
+  flex-direction: column;
 }
 
 .sidebar-navlinks a {
@@ -107,4 +108,9 @@
   color: #90e0ef;
   background-color: transparent;
   cursor: pointer;
+}
+#register-btn,
+#login-btn {
+  width: 80%;
+  text-align: center;
 }
