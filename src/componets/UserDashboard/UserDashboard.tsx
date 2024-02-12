@@ -47,6 +47,7 @@ const UserDashboard: React.FC<IEvents> = (props) => {
             .map((event, index) => {
               return (
                 <EventGridCard
+                  key={index}
                   title={event.title}
                   date={event.date}
                   venue={event.venue}
