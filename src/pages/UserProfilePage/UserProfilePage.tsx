@@ -72,6 +72,7 @@ const dummyUser: IUser = {
 
 const UserProfilePage: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+
   const location = useLocation();
   const navigate = useNavigate();
   //   const user = location.state as IUser;
@@ -115,6 +116,7 @@ const UserProfilePage: React.FC = () => {
       });
     });
   }, [selectedOption]);
+
   useEffect(() => {
     window.onpopstate = () => {
       navigate("/error", { state: { errorType: "404" } });

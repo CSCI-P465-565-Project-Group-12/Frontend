@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import EventGridCard from "../UI/EventGridCard/EventGridCard";
 import UserUpcomingEventCard from "../UI/UserUpcomingEventCard/UserUpcomingEventCard";
 import "./UserDashboard.css";
@@ -9,13 +10,31 @@ interface IEvent {
   image: string;
   time?: string;
 }
+
 interface IEvents {
   events: IEvent[];
 }
+
 const UserDashboard: React.FC<IEvents> = (props) => {
+  const [wish, setWish] = useState<string>("");
+  const wishes: string[] = ["Good Morning", "Good Afternoon", "Good Evening"];
+  useEffect(() => {
+    const date = new Date();
+    const hours = date.getHours();
+    if (hours < 12) {
+      setWish(wishes[0]);
+    } else if (hours < 18) {
+      setWish(wishes[1]);
+    } else {
+      setWish(wishes[2]);
+    }
+  }, []);
   return (
     <>
       <div className="user-dashboard-container">
+        <div className="wish">
+          <h1>{wish}</h1>
+        </div>
         <div className="user-upcoming-event">
           <h2>Upcoming Event</h2>
           {props.events.sort((a, b) => {
