@@ -1,0 +1,39 @@
+.user-upcoming-event-card {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center;
+  align-items: center; */
+  width: 100%;
+  height: 100%;
+  background-color: #caf0f8;
+  color: #161b33;
+}
+
+.event-pic {
+  display: flex;
+  width: 40%;
+  height: 100%;
+}
+.event-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.event-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin: 10px;
+}
+.event-info h2 {
+  font-size: 1.5em;
+  margin: 0;
+  color: #161b33;
+}
+.event-info p {
+  font-size: 1em;
+  margin: 0;
+  color: #161b33;
+}

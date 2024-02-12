@@ -4,7 +4,7 @@ interface EventGridCardProps {
   date: string;
   venue: string;
   image: string;
-  noOdTicketsSold: number;
+  noOdTicketsSold?: number;
 }
 const EventGridCard: React.FC<EventGridCardProps> = (props) => {
   return (
