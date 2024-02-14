@@ -59,6 +59,32 @@
   border-color: #646cff;
 }
 
+.password-validation {
+  color: #ff4d4d;
+  font-weight: 700;
+  animation: shake 0.5s;
+}
+
+.password-strength {
+  display: flex;
+  margin: 10px auto;
+  max-width: 100%;
+  max-height: 10px;
+  flex-direction: row;
+  background-color: #becdd0;
+}
+.password-strength div {
+  width: calc(100% / 3);
+  height: 10px;
+}
+.active {
+  background-color: #ff4d4d;
+  transition: backgroud-color cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.inactive {
+  background-color: #becdd0;
+  transition: backgroud-color cubic-bezier(0.215, 0.61, 0.355, 1);
+}
 .login-btn {
   margin: 10px auto;
   padding: 0.6em 1.2em;
@@ -109,5 +135,41 @@
   }
   .login-poster {
     display: none;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 0px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, 0px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 0px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, 0px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 0px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 0px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 0px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, 0px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 0px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, 0px) rotate(-1deg);
   }
 }
