@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
       setPasswordMessage("");
     }
   };
-  const passwordStrengthSetter = (e) => {
+  const passwordStrengthSetter = (e: any) => {
     const password = e.target.value;
     const passwordLength = password.length;
     const upperCase = /[A-Z]/;
