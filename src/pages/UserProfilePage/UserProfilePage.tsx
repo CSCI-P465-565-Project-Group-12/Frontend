@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import "./UserProfilePage.css";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 import UserDashboard from "../../componets/UserDashboard/UserDashboard";
@@ -73,17 +73,17 @@ const dummyUser: IUser = {
 const UserProfilePage: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
 
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
   //   const user = location.state as IUser;
 
-  const sideBarOptions: string[] = [
-    "Dashboard",
-    "Events",
-    "Announcements",
-    "Help",
-    "Logout",
-  ];
+  // const sideBarOptions: string[] = [
+  //   "Dashboard",
+  //   "Events",
+  //   "Announcements",
+  //   "Help",
+  //   "Logout",
+  // ];
 
   const previewProfilePic = (event: any) => {
     const input = event.target;
