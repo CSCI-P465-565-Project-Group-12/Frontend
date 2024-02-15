@@ -3,17 +3,24 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import signUpImg from "../../assets/signup-poster.png";
 import "./LoginPage.css";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import useApi from "../../hooks/apiHook";
+import LoadingModal from "../../componets/UI/Modal/LoadingModal";
+import { useDispatch, useSelector } from "react-redux";
+import { loadingActions } from "../../store/loading-store";
 
 const LoginPage: React.FC = () => {
-  const roleOptions: string[] = ["User", "Admin"];
+  const roleOptions: string[] = ["RegularUser", "VenueOwner"];
   const location = useLocation();
+  const navigate = useNavigate();
   const linkFor = location.state.linkFor?.toString() || "login";
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
   const [formToggler, setFormToggler] = useState<string>(linkFor);
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const [passwordScore, setPasswordScore] = useState<number>(0);
-
+  const { register } = useApi();
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state: any) => state.loading.isLoading);
   const messages: string[] = [
     "Password must contain at least 8 characters",
     "Password must contain at least 1 uppercase letter",
@@ -103,6 +110,42 @@ const LoginPage: React.FC = () => {
       setIsPasswordValid(false);
     }
   };
+
+  const handleRegister = async () => {
+    const username = document.getElementById("username") as HTMLInputElement;
+    const email = document.getElementById("email") as HTMLInputElement;
+    const password = document.getElementById("password") as HTMLInputElement;
+    const role = document.getElementById("role") as HTMLSelectElement;
+    const data = {
+      username: username.value,
+      email: email.value,
+      password: password.value,
+      role: role.value,
+    };
+
+    if (passwordMessage === "" && isPasswordValid) {
+      dispatch(
+        loadingActions.setLoading({
+          isLoading: true,
+          message: "Registering you to our database...",
+        })
+      );
+      const response = await register(data);
+      const duoAuthUrl = response.data.url;
+      if (duoAuthUrl) {
+        window.open(duoAuthUrl, "_blank");
+      }
+      dispatch(
+        loadingActions.setLoading({
+          isLoading: false,
+          message: "",
+        })
+      );
+      navigate("/register-success");
+    } else {
+      alert("Please fill the form correctly");
+    }
+  };
   return (
     <>
       <Navbar />
@@ -180,7 +223,17 @@ const LoginPage: React.FC = () => {
                       </div>
                     </>
                   )}
-                  <button className="register-btn">Register</button>
+                  <label htmlFor="role">Role</label>
+                  <select name="role" id="role">
+                    {roleOptions.map((role, index) => (
+                      <option key={index} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                  <button className="register-btn" onClick={handleRegister}>
+                    Register
+                  </button>
                   <div className="register-link">
                     <p>Already have an account?</p>
                     <button onClick={() => setFormToggler("login")}>
@@ -224,6 +277,14 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
       <Footer />
+      {isLoading && (
+        <LoadingModal
+          message={
+            formToggler === "register" ? "Registering..." : "Logging in..."
+          }
+        />
+      )}
+      {/* <LoadingModal message="Registering..." /> */}
     </>
   );
 };

@@ -1,11 +1,10 @@
+import axios from "axios";
+
 const useApi = () => {
-  const baseApi = "https://api.example.com";
+  const baseApi = `http://localhost:8080/`;
   const register = async (data: any) => {
-    const response = await fetch(`${baseApi}/register`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    return response.json();
+    const response = await axios.post(baseApi + "signup", data);
+    return response;
   };
   return { register };
 };
