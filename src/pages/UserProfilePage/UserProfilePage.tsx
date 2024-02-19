@@ -3,6 +3,7 @@ import "./UserProfilePage.css";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 import UserDashboard from "../../componets/UserDashboard/UserDashboard";
 import { useEffect, useState } from "react";
+import UserProfile from "../../componets/UserProfile/UserProfile";
 
 interface IEvents {
   title: string;
@@ -153,6 +154,15 @@ const UserProfilePage: React.FC = () => {
             <div
               className="link"
               onClick={() => {
+                setSelectedOption("Profile");
+              }}
+            >
+              <i className="bi bi-person-fill"></i>
+              <a href="/">Profile</a>
+            </div>
+            <div
+              className="link"
+              onClick={() => {
                 setSelectedOption("Dashboard");
               }}
             >
@@ -195,6 +205,7 @@ const UserProfilePage: React.FC = () => {
           {selectedOption === "Dashboard" && (
             <UserDashboard events={dummyUser.events} />
           )}
+          {selectedOption === "Profile" && <UserProfile />}
         </div>
       </div>
     </>

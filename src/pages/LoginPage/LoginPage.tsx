@@ -133,7 +133,7 @@ const LoginPage: React.FC = () => {
       const response = await register(data);
       const duoAuthUrl = response.data.url;
       if (duoAuthUrl) {
-        window.open(duoAuthUrl, "_blank");
+        window.open(duoAuthUrl, "_self");
       }
       dispatch(
         loadingActions.setLoading({
@@ -141,7 +141,7 @@ const LoginPage: React.FC = () => {
           message: "",
         })
       );
-      navigate("/register-success");
+      // navigate("/register-success");
     } else {
       alert("Please fill the form correctly");
     }
