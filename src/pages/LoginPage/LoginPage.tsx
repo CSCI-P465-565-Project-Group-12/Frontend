@@ -3,7 +3,7 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import signUpImg from "../../assets/signup-poster.png";
 import "./LoginPage.css";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import useApi from "../../hooks/apiHook";
 import LoadingModal from "../../componets/UI/Modal/LoadingModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,6 @@ import { loadingActions } from "../../store/loading-store";
 const LoginPage: React.FC = () => {
   const roleOptions: string[] = ["RegularUser", "VenueOwner"];
   const location = useLocation();
-  const navigate = useNavigate();
   const linkFor = location.state.linkFor?.toString() || "login";
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
   const [formToggler, setFormToggler] = useState<string>(linkFor);
