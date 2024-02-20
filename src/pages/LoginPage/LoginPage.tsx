@@ -8,10 +8,11 @@ import useApi from "../../hooks/apiHook";
 import LoadingModal from "../../componets/UI/Modal/LoadingModal";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store/loading-store";
-
+import ReCAPTCHA from "react-google-recaptcha";
 const LoginPage: React.FC = () => {
   const roleOptions: string[] = ["RegularUser", "VenueOwner"];
   const location = useLocation();
+
   const linkFor = location.state.linkFor?.toString() || "login";
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
   const [formToggler, setFormToggler] = useState<string>(linkFor);
@@ -20,6 +21,7 @@ const LoginPage: React.FC = () => {
   const { register } = useApi();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.loading.isLoading);
+
   const messages: string[] = [
     "Password must contain at least 8 characters",
     "Password must contain at least 1 uppercase letter",
@@ -122,7 +124,14 @@ const LoginPage: React.FC = () => {
       role: role.value,
     };
 
-    if (passwordMessage === "" && isPasswordValid) {
+    if (
+      passwordMessage === "" &&
+      isPasswordValid &&
+      username.value !== "" &&
+      email.value !== "" &&
+      password.value !== "" &&
+      role.value !== ""
+    ) {
       dispatch(
         loadingActions.setLoading({
           isLoading: true,
@@ -145,6 +154,7 @@ const LoginPage: React.FC = () => {
       alert("Please fill the form correctly");
     }
   };
+
   return (
     <>
       <Navbar />
@@ -230,6 +240,10 @@ const LoginPage: React.FC = () => {
                       </option>
                     ))}
                   </select>
+                  <ReCAPTCHA
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    style={{ margin: "10px" }}
+                  />
                   <button className="register-btn" onClick={handleRegister}>
                     Register
                   </button>

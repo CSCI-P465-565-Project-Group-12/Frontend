@@ -8,7 +8,8 @@
   transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .user-details-1,
-.user-details-2 {
+.user-details-2,
+.user-payment-details {
   display: flex;
   padding: 0.5rem;
   border-bottom: 1px solid #caf0f8;
@@ -23,35 +24,62 @@
 .user-username,
 .user-phone,
 .country,
-.user-address {
-  font-size: 1.5rem;
+.user-address,
+.card-details {
+  font-size: 1.3rem;
   font-weight: 500;
   color: #caf0f8;
 }
-
-.user-details-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.user-input {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
-.user-details-form label {
-  font-size: 1.2rem;
-  font-weight: 500;
+.edit-icon {
   color: #caf0f8;
-}
-.user-details-form input {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid #90e0ef;
-  border-radius: 5px;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
-.user-details-form input:focus {
-  outline: none;
-  border: 1px solid #90e0ef;
+.user-payment-details {
+  flex-direction: column;
 }
-.user-details-form label {
-  font-size: 1.2rem;
-  font-weight: 500;
+.payments-container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.card-details-form {
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; */
+  width: 50%;
+  /* height: 100%; */
+  /* padding: 20px; */
+  transition: all 0.6s;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; */
+  /* width: 100%; */
+}
+.card-details-form input {
+  width: 90%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-bottom: 1px solid #caf0f8;
+  background-color: transparent;
   color: #caf0f8;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.card-details p:nth-child(1) {
+  margin-top: 0;
 }
