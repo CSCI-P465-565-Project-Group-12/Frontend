@@ -146,7 +146,7 @@ const UserProfilePage: React.FC = () => {
               </label>{" "}
             </div>
             <div className="profile-info">
-              <h2>{dummyUser.name}</h2>
+              <h2>Add your name</h2>
               <p>{dummyUser.email}</p>
             </div>
           </div>

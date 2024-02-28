@@ -36,8 +36,8 @@ const SideBar: React.FC<ISideBarProps> = (props) => {
         <h1>BashBoss</h1>
       </div>
       <div className="sidebar-navlinks">
-        <a href="/">Home</a>
-        <a href="/">Events</a>
+        <Link to="/">Home</Link>
+        <Link to="/browse-events">Events</Link>
         <a href="/">Services</a>
         <a href="/">Contact</a>
       </div>
@@ -50,7 +50,7 @@ const SideBar: React.FC<ISideBarProps> = (props) => {
         <i className="bi bi-x"></i>
       </div>
       <div className="sidebar-register-login-btns">
-        <Link to="/login" id="register-btn" state={{ linkFor: "register" }}>
+        <Link to="/sign-up" id="register-btn" state={{ linkFor: "register" }}>
           Register
         </Link>
         <Link to="/login" id="login-btn" state={{ linkFor: "login" }}>

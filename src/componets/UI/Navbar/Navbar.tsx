@@ -25,12 +25,16 @@ const Navbar = () => {
           </div>
           <div className="navlinks">
             <Link to="/">Home</Link>
-            <a href="/">Events</a>
+            <Link to="/browse-events">Events</Link>
             <a href="/">Services</a>
             <a href="/">Contact</a>
           </div>
           <div className="register-login-btns">
-            <Link to="/login" id="register-btn" state={{ linkFor: "register" }}>
+            <Link
+              to="/sign-up"
+              id="register-btn"
+              state={{ linkFor: "register" }}
+            >
               Register
             </Link>
             <Link to="/login" id="login-btn" state={{ linkFor: "login" }}>
