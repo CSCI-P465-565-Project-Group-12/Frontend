@@ -6,7 +6,7 @@ footer {
   height: 80px;
   border-top: 1px solid #caf0f8;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
-  margin: auto 2rem;
+  margin: 1rem 2rem;
 }
 .footer-logo {
   display: flex;

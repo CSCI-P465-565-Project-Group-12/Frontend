@@ -4,6 +4,7 @@ import FilterBox from "../../componets/UI/FilterBox/FilterBox";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./BrowseEventsPage.css";
 import { useEffect, useState } from "react";
+import Footer from "../../componets/UI/Footer/Footer";
 let events = [
   {
     title: "IU Hoosiers vs Northwestern Wildcats",
@@ -128,6 +129,7 @@ const BrowseEventsPage = () => {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 };

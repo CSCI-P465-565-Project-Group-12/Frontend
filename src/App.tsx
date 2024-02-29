@@ -6,12 +6,14 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import RegisterSuccessPage from "./pages/RegisterSuccessPage/RegisterSuccessPage";
 import AuthCallbackHandlerPage from "./pages/AuthCallbackHandlerPage/AuthCallbackHandlerPage";
 import BrowseEventsPage from "./pages/BrowseEventsPage/BrowseEventsPage";
+import EventPage from "./pages/EventPage/EventPage";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/browse-events" element={<BrowseEventsPage />} />
+      <Route path="/event/:eventId" element={<EventPage />} />
       <Route path="/sign-up" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/post-auth-callback" element={<AuthCallbackHandlerPage />} />

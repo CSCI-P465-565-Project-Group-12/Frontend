@@ -1,0 +1,121 @@
+.event-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  height: 100%;
+  padding: auto 2rem;
+}
+
+.cover-image {
+  display: flex;
+  height: 600px;
+  width: 100%;
+}
+.cover-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.event-details-container-1 {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 0 2rem;
+}
+
+.event-category {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background-color: #6b6b6b;
+  width: min-content;
+}
+.event-category p {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 5px 7px;
+}
+.event-details-container-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-organizer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background-color: #00b4d8;
+}
+.event-organizer h3 {
+  margin-bottom: 0;
+}
+.event-organizer p {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.event-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background-color: #00b4d8;
+}
+.event-location,
+.event-cost {
+  display: flex;
+  width: 95%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px dotted #161b33;
+}
+.event-location h3 {
+  margin-bottom: 0;
+}
+.event-location p {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.event-cost h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.event-cost p {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.book-event-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 0;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background-color: #6b6b6b;
+}

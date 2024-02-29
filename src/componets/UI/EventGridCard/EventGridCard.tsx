@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import "./EventGridCard.css";
 interface EventGridCardProps {
   title: string;
@@ -7,6 +8,7 @@ interface EventGridCardProps {
   noOdTicketsSold?: number;
 }
 const EventGridCard: React.FC<EventGridCardProps> = (props) => {
+  const navigate = useNavigate();
   return (
     <div className="event-grid-card">
       <div className="event-grid-card-image">
@@ -20,7 +22,14 @@ const EventGridCard: React.FC<EventGridCardProps> = (props) => {
         <h3 className="event-grid-card-title">{props.title}</h3>
         <p className="event-grid-card-date">{props.date}</p>
         <p className="event-grid-card-location">{props.venue}</p>
-        <button className="view-more-btn">View More</button>
+        <button
+          className="view-more-btn"
+          onClick={() => {
+            navigate(`/event/${props.title}`);
+          }}
+        >
+          View More
+        </button>
       </div>
     </div>
   );
