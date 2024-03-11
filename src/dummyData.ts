@@ -9,7 +9,7 @@ export const events = [
     details: {
       description: "Exciting basketball match between IU Hoosiers and Northwestern Wildcats.",
       price: "$20",
-      location: "Assembly Hall",
+      location: "Bloomington, Indiana",
       eventOrganizer: "IU Athletics",
       venueNotes: "Please maintain queue and follow the instructions of the staff. No outside food allowed. Please dont park without permit. Please dont crowd the gates.",
     }

@@ -38,7 +38,7 @@ const SideBar: React.FC<ISideBarProps> = (props) => {
       <div className="sidebar-navlinks">
         <Link to="/">Home</Link>
         <Link to="/browse-events">Events</Link>
-        <a href="/">Services</a>
+        <Link to="/events-near-me">Explore</Link>
         <a href="/">Contact</a>
       </div>
       <div

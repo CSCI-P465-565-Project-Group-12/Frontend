@@ -13,6 +13,15 @@ const Navbar = () => {
         setIsMobile(false);
       }
     });
+    // onscroll , add box shadow to navbar
+    window.addEventListener("scroll", () => {
+      const navbar = document.querySelector(".navbar") as HTMLElement;
+      if (window.scrollY > 0) {
+        navbar.style.boxShadow = "0px 17px 22px -10px rgba(0, 0, 0, 0.62)";
+      } else {
+        navbar.style.boxShadow = "none";
+      }
+    });
   }, []);
   return (
     <>
@@ -26,7 +35,7 @@ const Navbar = () => {
           <div className="navlinks">
             <Link to="/">Home</Link>
             <Link to="/browse-events">Events</Link>
-            <a href="/">Services</a>
+            <Link to="/events-near-me">Explore</Link>
             <a href="/">Contact</a>
           </div>
           <div className="register-login-btns">

@@ -8,7 +8,16 @@ const useApi = () => {
 
     return response;
   };
-  return { register };
+  const addressSearch = async (address: string) => {
+    const response = await axios.get(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${
+        import.meta.env.VITE_MAPBOX_API_KEY
+      }`
+    );
+
+    return response.data.features;
+  };
+  return { register, addressSearch };
 };
 
 export default useApi;

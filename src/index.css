@@ -32,10 +32,10 @@ a:hover {
 }
 
 body {
-  margin: 10px;
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+  margin: 0;
 }
 
 h1 {
