@@ -14,7 +14,7 @@ const UserUpcomingEventCard: React.FC<IEvent> = (props) => {
         <div className="event-pic">
           <img src={props.image} alt="Event Pic" />
         </div>
-        <div className="event-info">
+        <div className="event-info-container">
           <h2>{props.title}</h2>
           <p>{props.venue}</p>
           <p>{props.date}</p>

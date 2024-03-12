@@ -19,7 +19,7 @@
   height: 100%;
   object-fit: cover;
 }
-.event-info {
+.event-info-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,12 +27,12 @@
   width: 70%;
   margin: 10px;
 }
-.event-info h2 {
+.event-info-container h2 {
   font-size: 1.5em;
   margin: 0;
   color: #161b33;
 }
-.event-info p {
+.event-info-container p {
   font-size: 1em;
   margin: 0;
   color: #161b33;

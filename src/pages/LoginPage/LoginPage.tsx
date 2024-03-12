@@ -271,7 +271,7 @@ const LoginPage: React.FC = () => {
                   </select>
                   <button className="login-btn">Login</button>
                   <div className="forgot-password">
-                    <a href="/">Forgot Password?</a>
+                    <a href="/password-reset">Forgot Password?</a>
                   </div>
                   <div className="register-link">
                     <p>Don't have an account?</p>

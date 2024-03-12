@@ -1,4 +1,5 @@
 .browse-events-page-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -10,15 +11,18 @@
 }
 
 .filter-box-container {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30%;
+  width: 25%;
   height: 100%;
+  left: 40px;
 }
 
 .all-events-container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -27,4 +31,5 @@
   gap: 20px;
   width: 70%;
   height: 100%;
+  left: 30%;
 }
