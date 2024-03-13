@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import "./Navbar.css";
 import MobileNavbar from "./MobileNavbar";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginActions } from "../../../store/login-store";
+import useAuth from "../../../hooks/authHook";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const isLoggedIn = useSelector((state: any) => state.login.isLoggedin);
+  const dispatch = useDispatch();
+  const { googleLogoutHandler } = useAuth();
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (window.innerWidth <= 1060) {
@@ -39,16 +45,31 @@ const Navbar = () => {
             <a href="/">Contact</a>
           </div>
           <div className="register-login-btns">
-            <Link
-              to="/sign-up"
-              id="register-btn"
-              state={{ linkFor: "register" }}
-            >
-              Register
-            </Link>
-            <Link to="/login" id="login-btn" state={{ linkFor: "login" }}>
-              Login
-            </Link>
+            {isLoggedIn ? (
+              <Link
+                to="/"
+                id="login-btn"
+                onClick={() => {
+                  dispatch(loginActions.logout());
+                  googleLogoutHandler();
+                }}
+              >
+                Logout
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/sign-up"
+                  id="register-btn"
+                  state={{ linkFor: "register" }}
+                >
+                  Register
+                </Link>
+                <Link to="/login" id="login-btn" state={{ linkFor: "login" }}>
+                  Login
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

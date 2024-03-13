@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.1.0",
     "@tomtom-international/web-sdk-maps": "^6.25.0",
     "axios": "^1.6.7",
+    "jwt-decode": "^4.0.0",
     "mapbox": "^1.0.0-beta10",
     "react": "^18.2.0",
     "react-credit-cards-2": "^1.0.2",

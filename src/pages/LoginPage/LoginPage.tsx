@@ -3,12 +3,14 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import signUpImg from "../../assets/signup-poster.png";
 import "./LoginPage.css";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import useApi from "../../hooks/apiHook";
 import LoadingModal from "../../componets/UI/Modal/LoadingModal";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store/loading-store";
 import ReCAPTCHA from "react-google-recaptcha";
+import { GoogleLogin } from "@react-oauth/google";
+import { loginActions } from "../../store/login-store";
 const LoginPage: React.FC = () => {
   const roleOptions: string[] = ["RegularUser", "VenueOwner"];
   const location = useLocation();
@@ -20,6 +22,7 @@ const LoginPage: React.FC = () => {
   const [passwordScore, setPasswordScore] = useState<number>(0);
   const { register } = useApi();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isLoading = useSelector((state: any) => state.loading.isLoading);
 
   const messages: string[] = [
@@ -30,6 +33,22 @@ const LoginPage: React.FC = () => {
     "Password must contain at least 1 special character",
   ];
 
+  const responseMessage = (codeResponse: any) => {
+    dispatch(loginActions.login());
+
+    navigate("/user", {
+      state: {
+        loginType: "google",
+        googleCred: {
+          clientId: codeResponse.clientId,
+          credential: codeResponse.credential,
+        },
+      },
+    });
+  };
+  const errorMessage = () => {
+    console.log("Error signing in with google.");
+  };
   const validatePassword = (event: any) => {
     const password = event.target.value;
     const passwordLength = password.length;
@@ -193,9 +212,9 @@ const LoginPage: React.FC = () => {
                           {passwordMessage.length === 0 ? (
                             " "
                           ) : (
-                            <>
+                            <p>
                               <span>&#128683;</span> {passwordMessage}
-                            </>
+                            </p>
                           )}
                         </p>
                         <div className="password-strength">
@@ -244,6 +263,16 @@ const LoginPage: React.FC = () => {
                     sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                     style={{ margin: "10px" }}
                   />
+                  <GoogleLogin
+                    onSuccess={responseMessage}
+                    onError={errorMessage}
+                    theme="filled_blue"
+                    size="large"
+                    context="signup"
+                    shape="rectangular"
+                    useOneTap
+                    type="standard"
+                  />
                   <button className="register-btn" onClick={handleRegister}>
                     Register
                   </button>
@@ -283,6 +312,13 @@ const LoginPage: React.FC = () => {
                       Register
                     </button>
                   </div>
+                  <p>Or</p>
+                  <GoogleLogin
+                    onSuccess={responseMessage}
+                    onError={errorMessage}
+                    theme="filled_blue"
+                    size="large"
+                  />
                 </>
               )}
             </div>
