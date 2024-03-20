@@ -1,0 +1,10 @@
+.checkout-form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.payment-element {
+  width: 100%;
+}

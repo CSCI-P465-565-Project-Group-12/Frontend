@@ -9,6 +9,7 @@ import BrowseEventsPage from "./pages/BrowseEventsPage/BrowseEventsPage";
 import EventPage from "./pages/EventPage/EventPage";
 import PasswordResetPage from "./pages/PasswordResetPage/PasswordResetPage";
 import EventsNearMePage from "./pages/EventsNearMePage/EventsNearMePage";
+import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/user" element={<UserProfilePage />} />
       <Route path="*" element={<ErrorPage errorType="404" />} />
       <Route path="/register-success" element={<RegisterSuccessPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
     </Routes>
   );
 }

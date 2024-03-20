@@ -1,0 +1,46 @@
+.checkout-page-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 80px;
+  height: 100vh;
+}
+
+.chekout-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.ticket-container {
+  display: flex;
+  width: 50%;
+  /* box-sizing: border-box; */
+  justify-content: center;
+  align-items: center;
+}
+.checkout-form-element-container {
+  display: flex;
+  flex-direction: column;
+  color: #161b33;
+  /* gap: 20px; */
+  width: 50%;
+  justify-content: center;
+  background-color: #c9f0f8;
+}
+
+@media screen and (max-width: 768px) {
+  .checkout-page-container {
+    padding: 20px;
+  }
+  .chekout-container {
+    flex-direction: column;
+  }
+  .ticket-container {
+    width: 100%;
+  }
+  .checkout-form-element-container {
+    width: 100%;
+  }
+}
