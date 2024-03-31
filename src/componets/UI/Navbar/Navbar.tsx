@@ -43,6 +43,7 @@ const Navbar = () => {
             <Link to="/browse-events">Events</Link>
             <Link to="/events-near-me">Explore</Link>
             <a href="/">Contact</a>
+            {isLoggedIn && <Link to="/user-profile">Profile</Link>}
           </div>
           <div className="register-login-btns">
             {isLoggedIn ? (

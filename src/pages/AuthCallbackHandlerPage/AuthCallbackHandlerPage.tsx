@@ -2,6 +2,7 @@ import { useLocation } from "react-router";
 import LoadingModal from "../../componets/UI/Modal/LoadingModal";
 import { useDispatch } from "react-redux";
 import { loadingActions } from "../../store/loading-store";
+import useApi from "../../hooks/apiHook";
 // import { useDispatch } from "react-redux";
 // import { loadingActions } from "../../store/loading-store";
 
@@ -15,9 +16,9 @@ const AuthCallbackHandlerPage = () => {
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
   //   const dispatch = useDispatch();
-
+  const { validateUserToken } = useApi();
   if (token) {
-    localStorage.setItem("token", token);
+    validateUserToken(token);
     // dispatch(loadingActions.setLoading({ isLoading: false, message: "" }));
     // navigate("/");
   }

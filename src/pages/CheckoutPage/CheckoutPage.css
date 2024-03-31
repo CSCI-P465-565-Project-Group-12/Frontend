@@ -4,7 +4,9 @@
   padding: 20px 80px;
   height: 100vh;
 }
-
+iframe {
+  background-color: #caf0f8;
+}
 .chekout-container {
   display: flex;
   flex-direction: row;

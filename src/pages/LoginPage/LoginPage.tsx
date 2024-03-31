@@ -158,10 +158,12 @@ const LoginPage: React.FC = () => {
         })
       );
       const response = await register(data);
-      const duoAuthUrl = response.data.url;
-      if (duoAuthUrl) {
-        window.open(duoAuthUrl, "_self");
-      }
+
+      // const duoAuthUrl = response.data.url;
+
+      // if (duoAuthUrl) {
+      //   window.open(duoAuthUrl, "_self");
+      // }
       dispatch(
         loadingActions.setLoading({
           isLoading: false,

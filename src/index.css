@@ -21,9 +21,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-iframe {
-  background-color: #caf0f8;
-}
 
 a {
   font-weight: 500;
@@ -39,6 +36,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   margin: 0;
+  background-color: #161b33;
+  color: #caf0f8;
 }
 
 h1 {

@@ -73,6 +73,10 @@
   background: #161b33;
   color: #caf0f8;
 }
+.calendar .dates button.completed {
+  background: #161b3385;
+  color: #caf0f8;
+}
 .calendar .dates button:first-child {
   grid-column: 3;
 }

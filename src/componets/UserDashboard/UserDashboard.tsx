@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import EventGridCard from "../UI/EventGridCard/EventGridCard";
 import UserUpcomingEventCard from "../UI/UserUpcomingEventCard/UserUpcomingEventCard";
 import "./UserDashboard.css";
+import Calendar from "../UI/Calendar/Calendar";
 
 interface IEvent {
   title: string;
@@ -20,6 +21,7 @@ const UserDashboard: React.FC<IEvents> = (props) => {
   const wishes: string[] = ["Good Morning", "Good Afternoon", "Good Evening"];
   useEffect(() => {
     const date = new Date();
+
     const hours = date.getHours();
     if (hours < 12) {
       setWish(wishes[0]);
@@ -29,18 +31,77 @@ const UserDashboard: React.FC<IEvents> = (props) => {
       setWish(wishes[2]);
     }
   }, []);
+  let days: string[] = [];
+  props.events
+    .filter((currentMonth) => {
+      return new Date(currentMonth.date).getMonth() === new Date().getMonth();
+    })
+    .filter((currentYear) => {
+      return (
+        new Date(currentYear.date).getFullYear() === new Date().getFullYear()
+      );
+    })
+    .forEach((event) => {
+      const date = new Date(event.date);
+      days.push(date.getDate().toString());
+      console.log(days);
+    });
   return (
     <>
       <div className="user-dashboard-container">
         <div className="wish">
           <h1>{wish}</h1>
         </div>
+        <h2>Your Calendar</h2>
+        <div className="user-calendar">
+          <Calendar
+            day={days}
+            month={new Date().toLocaleString("default", { month: "long" })}
+            year={new Date().getFullYear().toString()}
+          />
+          <div className="upcoming-events-list">
+            <h2>Upcoming Events</h2>
+            <ul>
+              {props.events
+                .filter((event) => {
+                  return (
+                    new Date(event.date).getFullYear() ===
+                    new Date().getFullYear()
+                  );
+                })
+                .filter((event) => {
+                  return (
+                    new Date(event.date).getMonth() === new Date().getMonth()
+                  );
+                })
+                .filter((event) => {
+                  return (
+                    new Date(event.date).getDate() + 1 > new Date().getDate()
+                  );
+                })
+                .map((event, index) => {
+                  return (
+                    <li key={index}>
+                      <span
+                        style={{
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {event.title}
+                      </span>{" "}
+                      {event.date}
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+        </div>
         <div className="user-upcoming-event">
           <h2>Upcoming Event</h2>
           {props.events.sort((a, b) => {
             return new Date(a.date).getTime() - new Date(b.date).getTime();
           })[0] === undefined ? (
-            <h3>No upcoming events</h3>
+            <h2>No upcoming events</h2>
           ) : (
             <UserUpcomingEventCard
               title={props.events[0].title}

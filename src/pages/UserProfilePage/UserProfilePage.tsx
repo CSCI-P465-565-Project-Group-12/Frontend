@@ -8,6 +8,7 @@ import LoadingModal from "../../componets/UI/Modal/LoadingModal";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { loadingActions } from "../../store/loading-store";
+import { googleUserActions } from "../../store/google-user-store";
 
 interface IEvents {
   title: string;
@@ -43,7 +44,7 @@ const dummyUser: IUser = {
     },
     {
       title: "Tampa Bay Chocolate Festival",
-      date: "2024-02-19",
+      date: "2024-03-24",
       venue: "Gulfview Square Mall",
       time: "10:00 AM - 5:00 PM",
       image:
@@ -66,11 +67,19 @@ const dummyUser: IUser = {
     },
     {
       title: "Focus room reservation",
-      date: "2024-02-20",
+      date: "2024-03-31",
       venue: "Herman B Wells Library",
       time: "9:00 AM - 11:00 AM",
       image:
         "https://www.wbiw.com/wordpress/wp-content/uploads/2020/10/herman-library.jpg",
+    },
+    {
+      title: "Bloomington Farmers Market",
+      date: "2024-03-31",
+      venue: "Showers Common",
+      time: "8:00 AM - 1:00 PM",
+      image:
+        "https://www.visitbloomington.com/imager/s3_amazonaws_com/visitbtown/VisitBtown_FarmersMarket_3b1b1d6b4c5a8f4b4b1b1d6b4c5a8f4b.jpg",
     },
   ],
 };
@@ -84,7 +93,12 @@ const UserProfilePage: React.FC = () => {
   if (loginType === "google") {
     const googleCred = location.state.googleCred;
     googleUser = jwtDecode(googleCred.credential);
-
+    dispatch(
+      googleUserActions.setGoogleUser({
+        name: googleUser.name,
+        email: googleUser.email,
+      })
+    );
     // setGoogleUser(user);
     dispatch(
       loadingActions.setLoading({

@@ -5,11 +5,27 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./CheckoutPage.css";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../componets/CheckoutForm/CheckoutForm";
-const CheckoutPage = () => {
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+
+interface ICheckout {
+  amount: number;
+  eventName: string;
+  eventLocation: string;
+  eventTime: string;
+  eventDate: string;
+  userName: string;
+}
+const CheckoutPage: React.FC = () => {
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
+  const isLoggedIn = useSelector((state: any) => state.login.isLoggedin);
+  //   console.log(isLoggedIn);
+
+  const location = useLocation();
+  const checkout: ICheckout = location.state.checkout;
   const options: StripeElementsOptionsMode = {
     mode: "payment",
-    amount: 1099,
+    amount: 1090,
     currency: "usd",
     appearance: {
       theme: "stripe",
@@ -18,27 +34,73 @@ const CheckoutPage = () => {
   return (
     <>
       <Navbar />
-      <div className="checkout-page-container">
-        <h1>Checkout Page</h1>
-        <div className="chekout-container">
-          <div className="ticket-container">
-            <EventTicket />
-          </div>
-          <div className="checkout-form-element-container">
-            <h2
+      {isLoggedIn && checkout ? (
+        <>
+          <div className="checkout-page-container">
+            <h1
               style={{
-                textAlign: "center",
+                color: "#caf0f8",
+                marginTop: "20px",
               }}
             >
-              Choose Payment Option
-            </h2>
+              Checkout Page
+            </h1>
+            <div className="chekout-container">
+              <div className="ticket-container">
+                <EventTicket
+                  amount={checkout.amount}
+                  eventName={checkout.eventName}
+                  eventLocation={checkout.eventLocation}
+                  eventTime={checkout.eventTime}
+                  eventDate={checkout.eventDate}
+                  userName={checkout.userName}
+                />
+              </div>
+              <div className="checkout-form-element-container">
+                <h2
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
+                  Choose Payment Option
+                </h2>
 
-            <Elements stripe={stripePromise} options={options}>
-              <CheckoutForm />
-            </Elements>
+                <Elements stripe={stripePromise} options={options}>
+                  <CheckoutForm />
+                </Elements>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              height: "100vh",
+              color: "#caf0f8",
+            }}
+          >
+            <h1>Please Login to proceed.</h1>
+            <button>
+              <Link
+                to="/login"
+                state={{ linkFor: "login" }}
+                style={{
+                  color: "#caf0f8",
+                  textDecoration: "none",
+                }}
+              >
+                Login
+              </Link>
+            </button>
+          </div>
+        </>
+      )}
+
       <Footer />
     </>
   );
