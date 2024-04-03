@@ -1,0 +1,72 @@
+.review-form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  border-radius: 5px;
+  background-color: #00b4d8;
+}
+
+.review-form-container h2 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.review-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-form label {
+  font-weight: 700;
+  color: #caf0f8;
+  font-size: large;
+}
+.review-form textarea {
+  height: 100px;
+  width: 50%;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #caf0f8;
+  background-color: #caf0f8c5;
+  font-size: large;
+  color: #161b33;
+}
+
+.review-form input {
+  width: 50%;
+  height: 30px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #caf0f8;
+  background-color: #caf0f8c5;
+  font-size: large;
+  color: #161b33;
+}
+.review-form button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  background-color: #caf0f8;
+  color: #161b33;
+  margin-bottom: 10px;
+}
+
+.review-form button:hover {
+  border-color: #646cff;
+}
+
+.review-form button:focus,
+.review-form button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}

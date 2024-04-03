@@ -5,7 +5,11 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./EventPage.css";
 import { events } from "../../dummyData";
 import { useSelector } from "react-redux";
+import ReviewsAccordian from "../../componets/ReviewsAccordian/ReviewsAccordian";
+import { useEffect, useState } from "react";
+import ReviewForm from "../../componets/ReviewForm/ReviewForm";
 const EventPage: React.FC = () => {
+  const [overallRating, setOverallRating] = useState<number>(0);
   const { eventId } = useParams();
   const identifiedEvent = events.find((event) => event.title === eventId);
   if (!identifiedEvent) {
@@ -36,6 +40,30 @@ const EventPage: React.FC = () => {
           },
         });
   };
+
+  const overallRatingHandler = () => {
+    if (identifiedEvent.reviews.length === 0) {
+      return;
+    }
+    const reviews = identifiedEvent.reviews;
+    let sum = 0;
+    reviews.forEach((review) => {
+      sum += review.rating!;
+    });
+    setOverallRating(sum / reviews.length);
+    const outterMainCircle = document.querySelector(
+      ".main-rating-circle-outter"
+    ) as HTMLDivElement;
+    const innerMainCircle = document.querySelector(
+      ".main-rating-circle"
+    ) as HTMLDivElement;
+    const percentage = ((overallRating - 1) / (5 - 1)) * 100;
+    outterMainCircle.style.background = `conic-gradient(#6b6b6b ${percentage}%, #6b6b6b69 0%)`;
+    innerMainCircle.style.background = `conic-gradient(#161b33 ${percentage}%, #161b33 0%)`;
+  };
+  useEffect(() => {
+    overallRatingHandler();
+  }, [identifiedEvent.reviews]);
   return (
     <>
       <Navbar />
@@ -58,6 +86,22 @@ const EventPage: React.FC = () => {
                 })}
               </ul>
             </div>
+            {identifiedEvent.reviews.length > 0 ? (
+              <>
+                <div className="overall-rating">
+                  <h1>Rated</h1>
+                  <div className="main-rating-circle-outter">
+                    <div className="main-rating-circle">
+                      <p>{overallRating}</p>
+                    </div>
+                  </div>
+                </div>
+                <ReviewsAccordian reviews={identifiedEvent.reviews} />
+              </>
+            ) : (
+              <h3>No reviews yet</h3>
+            )}
+            <ReviewForm eventName={identifiedEvent.title} />
           </div>
           <div className="event-details-container-2">
             <div className="event-organizer">

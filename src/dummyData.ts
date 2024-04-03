@@ -12,7 +12,28 @@ export const events = [
       location: "Bloomington, Indiana",
       eventOrganizer: "IU Athletics",
       venueNotes: "Please maintain queue and follow the instructions of the staff. No outside food allowed. Please dont park without permit. Please dont crowd the gates.",
-    }
+    },
+    reviews:[
+      {
+        name: "John Doe",
+        rating: 2,
+        comment: "Great game!",
+        date: "2024-02-18"
+      },
+      {
+        name: "Jane Doe",
+        rating: 1,
+        comment: "Awesome!",
+        date: "2024-02-18"
+      },
+      {
+        name: "Alice",
+        rating: 3,
+        comment: "Good game.",
+        date: "2024-02-18"
+      },
+
+    ]
   },
   {
     title: "McCormick Tribune Ice Rink",
@@ -26,7 +47,28 @@ export const events = [
       location: "Millennium Park",
       venueNotes: "Please bring your own skates.",
       eventOrganizer: "Millennium Park",
-    }
+    },
+    reviews:[
+      {
+        name: "John Doe",
+        rating: 4,
+        comment: "Great place!",
+        date: "2024-01-11"
+      },
+      {
+        name: "Jane Doe",
+        rating: 5,
+        comment: "Awesome!",
+        date: "2024-01-11"
+      },
+      {
+        name: "Alice",
+        rating: 3,
+        comment: "Good place.",
+        date: "2024-01-11"
+      },
+
+    ]
   },
   {
     title: "Tampa Bay Chocolate Festival",
@@ -42,7 +84,28 @@ export const events = [
       location: "Gulfview Square Mall",
       venueNotes: "Free parking. Please dont litter. Please dont bring outside food. Please dont make a mess. Please dont make the staff uncomfortable.",
       eventOrganizer: "Tampa Bay Chocolate Festival",
-    }
+    },
+    reviews:[
+      {
+        name: "John Doe",
+        rating: 4,
+        comment: "Great festival!",
+        date: "2024-02-19"
+      },
+      {
+        name: "Jane Doe",
+        rating: 5,
+        comment: "Awesome!",
+        date: "2024-02-19"
+      },
+      {
+        name: "Alice",
+        rating: 3,
+        comment: "Good festival.",
+        date: "2024-02-19"
+      },
+
+    ]
   },
   {
     title: "United States Grand Prix",
@@ -57,7 +120,14 @@ export const events = [
       location: "Circuit of the Americas",
       venueNotes: "Please dont make driver uncomfortable. Maintain distance while taking photos",
       eventOrganizer: "Formula 1",
-    }
+    },
+    reviews:[
+      {
+        name: "John Doe",
+        rating: 4,
+        comment:"Amwesome experience!",
+        date: "2024-10-25"
+      }]
   },
   {
     title: "Squash court reservation",
@@ -72,7 +142,8 @@ export const events = [
       location: "IU Recreational Sports Center",     
       venueNotes: "Please bring your own equipment.",
       eventOrganizer: "Yourself",
-    }
+    },
+    reviews:[]
   },
   {
     title: "Focus room reservation",
@@ -87,7 +158,27 @@ export const events = [
       location: "Herman B Wells Library",
       venueNotes: "Please dont make noise. Maintain silence. No food allowed. Please respect the decorum of the library. Please dont exceed the time limit.",
       eventOrganizer: "Yourself",
-    }
+    },
+    reviews:[
+      {
+        name: "John Doe",
+        rating: 4,
+        comment: "Great place!",
+        date: "2024-03-20"
+      },
+      {
+        name: "Jane Doe",
+        rating: 5,
+        comment: "Awesome!",
+        date: "2024-03-20"
+      },
+      {
+        name: "Alice",
+        rating: 3,
+        comment: "Good place.",
+        date: "2024-03-20"
+      },
+    ]
   },
 ];
 
