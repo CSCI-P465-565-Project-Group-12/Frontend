@@ -182,3 +182,37 @@ export const events = [
   },
 ];
 
+
+export const venueOwners = [
+  {
+    name: "IU Athletics",
+    events: [
+      events[0],
+    ],
+  },
+  {
+    name: "Millennium Park",
+    events: [
+      events[1],
+    ],
+  },
+  {
+    name: "Tampa Bay Chocolate Festival",
+    events: [
+      events[2],
+    ],
+  },
+  {
+    name: "Formula 1",
+    events: [
+      events[3],
+    ],
+  },
+  {
+    name: "Yourself",
+    events: [
+      events[4],
+      events[5],
+    ],
+  },
+];

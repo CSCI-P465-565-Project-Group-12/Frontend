@@ -48,7 +48,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
         <span>Sun</span>
       </div>
       <div className="dates">
-        {Array.from({ length: monthWiseDays[currentMonth] - 1 }, (_, i) => (
+        {Array.from({ length: monthWiseDays[currentMonth] }, (_, i) => (
           <button
             key={i + 1}
             className={
@@ -59,7 +59,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                 : ""
             }
           >
-            <time>{i + 2}</time>
+            <time>{i + 1}</time>
           </button>
         ))}
       </div>

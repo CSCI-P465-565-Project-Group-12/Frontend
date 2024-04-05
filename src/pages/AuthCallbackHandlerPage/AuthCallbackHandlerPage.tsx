@@ -16,9 +16,10 @@ const AuthCallbackHandlerPage = () => {
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
   //   const dispatch = useDispatch();
-  const { validateUserToken } = useApi();
+  const { validateUserTokenForNormalUser } = useApi();
   if (token) {
-    validateUserToken(token);
+    localStorage.setItem("token", token);
+    validateUserTokenForNormalUser(token);
     // dispatch(loadingActions.setLoading({ isLoading: false, message: "" }));
     // navigate("/");
   }

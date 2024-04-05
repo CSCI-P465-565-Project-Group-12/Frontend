@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import UserProfile from "../../componets/UserProfile/UserProfile";
 import LoadingModal from "../../componets/UI/Modal/LoadingModal";
 import { jwtDecode } from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store/loading-store";
 import { googleUserActions } from "../../store/google-user-store";
+import { events } from "../../dummyData";
+import BookedEvents from "../../componets/BookedEvents/BookedEvents";
 
 interface IEvents {
   title: string;
@@ -23,72 +25,26 @@ interface IUser {
   events: IEvents[];
 }
 
+interface INormalUser {
+  id: string;
+  username: string;
+  email: string;
+}
+
 const dummyUser: IUser = {
   name: "John Doe",
   email: "jdoe@iu.edu",
-  events: [
-    {
-      title: "IU Hoosiers vs Northwestern Wildcats",
-      date: "2024-02-18",
-      venue: "Assembly Hall",
-      time: "3:00 PM",
-      image:
-        "https://cdn.vox-cdn.com/thumbor/5d-NuwLaj1O8-Cqn203pYpbvO3M=/0x0:4096x2730/1200x800/filters:focal(1721x1038:2375x1692)/cdn.vox-cdn.com/uploads/chorus_image/image/71981748/FpDehdlWcAAnJLi.0.jpg",
-    },
-    {
-      title: "McCormick Tribune Ice Rink",
-      date: "2024-01-11",
-      venue: "Millennium Park",
-      image:
-        "https://cdn.choosechicago.com/uploads/2023/11/mpicerink-900x400.jpg",
-    },
-    {
-      title: "Tampa Bay Chocolate Festival",
-      date: "2024-03-24",
-      venue: "Gulfview Square Mall",
-      time: "10:00 AM - 5:00 PM",
-      image:
-        "https://thatssotampa.com/wp-content/uploads/2023/12/ChocFestNew.jpg",
-    },
-    {
-      title: "United States Grand Prix",
-      date: "2024-10-25",
-      venue: "Circuit of the Americas",
-      time: "2:00 PM",
-      image:
-        "https://media.formula1.com/content/dam/fom-website/sutton/2022/USA/Sunday/1435987206.jpg.img.1536.high.jpg",
-    },
-    {
-      title: "Squash court reservation",
-      date: "2024-02-23",
-      venue: "IU Recreational Sports Center",
-      time: "6:00 PM",
-      image: "https://indianapublicmedia.org/images/news-images/srsc.jpg",
-    },
-    {
-      title: "Focus room reservation",
-      date: "2024-03-31",
-      venue: "Herman B Wells Library",
-      time: "9:00 AM - 11:00 AM",
-      image:
-        "https://www.wbiw.com/wordpress/wp-content/uploads/2020/10/herman-library.jpg",
-    },
-    {
-      title: "Bloomington Farmers Market",
-      date: "2024-03-31",
-      venue: "Showers Common",
-      time: "8:00 AM - 1:00 PM",
-      image:
-        "https://www.visitbloomington.com/imager/s3_amazonaws_com/visitbtown/VisitBtown_FarmersMarket_3b1b1d6b4c5a8f4b4b1b1d6b4c5a8f4b.jpg",
-    },
-  ],
+  events: [events[0], events[2], events[3], events[4]],
 };
 
 const UserProfilePage: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const location = useLocation();
   const dispatch = useDispatch();
-  const loginType = location.state.loginType;
+  const normalUser: INormalUser = useSelector((state: any) => state.normalUser);
+  console.log(normalUser);
+
+  const loginType = location.state.loginType || "";
   let googleUser: any = null;
   if (loginType === "google") {
     const googleCred = location.state.googleCred;
@@ -181,6 +137,7 @@ const UserProfilePage: React.FC = () => {
             <div className="profile-info">
               <h2>{googleUser !== null ? googleUser.name : "Add your name"}</h2>
               <p>{googleUser !== null && googleUser.email}</p>
+              <p>{normalUser !== null && normalUser.email}</p>
             </div>
           </div>
           <div className="side-bar-links">
@@ -238,7 +195,31 @@ const UserProfilePage: React.FC = () => {
           {selectedOption === "Dashboard" && (
             <UserDashboard events={dummyUser.events} />
           )}
-          {selectedOption === "Profile" && <UserProfile />}
+          {selectedOption === "Events" && (
+            <BookedEvents bookedEvents={dummyUser.events} />
+          )}
+          {selectedOption === "Profile" &&
+            (googleUser !== null ? (
+              <UserProfile
+                username=""
+                name={googleUser.name}
+                email={googleUser.email}
+                bio=""
+                phone=""
+                address=""
+                id=""
+              />
+            ) : (
+              <UserProfile
+                username={normalUser.username}
+                name={""}
+                email={normalUser.email}
+                bio=""
+                phone=""
+                address=""
+                id={normalUser.id}
+              />
+            ))}
         </div>
       </div>
     </>

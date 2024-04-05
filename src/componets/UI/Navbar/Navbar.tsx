@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "../../../store/login-store";
 import useAuth from "../../../hooks/authHook";
+import { normalUserActions } from "../../../store/normal-user-store";
+import { googleUserActions } from "../../../store/google-user-store";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -52,6 +54,9 @@ const Navbar = () => {
                 id="login-btn"
                 onClick={() => {
                   dispatch(loginActions.logout());
+                  dispatch(normalUserActions.resetUser());
+                  dispatch(googleUserActions.resetGoogleUser());
+                  localStorage.removeItem("token");
                   googleLogoutHandler();
                 }}
               >

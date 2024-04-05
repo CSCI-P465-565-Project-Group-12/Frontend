@@ -15,6 +15,9 @@ const googleUserSlice=createSlice({
         setGoogleUser(state:IGoogleUserState,action:PayloadAction<IGoogleUserState>){
             state.name=action.payload.name;
             state.email=action.payload.email;
+        },resetGoogleUser(state:IGoogleUserState){
+            state.name="";
+            state.email="";
         }
     }
 });

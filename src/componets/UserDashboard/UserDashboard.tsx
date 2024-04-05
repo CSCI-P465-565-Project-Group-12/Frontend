@@ -10,6 +10,7 @@ interface IEvent {
   venue: string;
   image: string;
   time?: string;
+  status?: string;
 }
 
 interface IEvents {

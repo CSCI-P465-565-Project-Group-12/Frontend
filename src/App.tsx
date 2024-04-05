@@ -10,6 +10,7 @@ import EventPage from "./pages/EventPage/EventPage";
 import PasswordResetPage from "./pages/PasswordResetPage/PasswordResetPage";
 import EventsNearMePage from "./pages/EventsNearMePage/EventsNearMePage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
+import ManageEventPage from "./pages/ManageEventPage/ManageEventPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="*" element={<ErrorPage errorType="404" />} />
       <Route path="/register-success" element={<RegisterSuccessPage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/manage-event" element={<ManageEventPage />} />
     </Routes>
   );
 }

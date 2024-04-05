@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
   const [formToggler, setFormToggler] = useState<string>(linkFor);
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const [passwordScore, setPasswordScore] = useState<number>(0);
-  const { register } = useApi();
+  const { register, login } = useApi();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoading = useSelector((state: any) => state.loading.isLoading);
@@ -157,25 +157,38 @@ const LoginPage: React.FC = () => {
           message: "Registering you to our database...",
         })
       );
-      const response = await register(data);
-
-      // const duoAuthUrl = response.data.url;
-
-      // if (duoAuthUrl) {
-      //   window.open(duoAuthUrl, "_self");
-      // }
-      dispatch(
-        loadingActions.setLoading({
-          isLoading: false,
-          message: "",
-        })
-      );
-      // navigate("/register-success");
+      await register(data);
     } else {
       alert("Please fill the form correctly");
     }
   };
+  const handleLogin = async () => {
+    const username = document.getElementById(
+      "login-username"
+    ) as HTMLInputElement;
+    const password = document.getElementById(
+      "login-password"
+    ) as HTMLInputElement;
+    const role = document.getElementById("login-role") as HTMLSelectElement;
+    const data = {
+      email: username.value,
+      password: password.value,
+    };
 
+    if (username.value !== "" && password.value !== "" && role.value !== "") {
+      dispatch(
+        loadingActions.setLoading({
+          isLoading: true,
+          message: "Logging you in...",
+        })
+      );
+      await login(data);
+      username.value = "";
+      password.value = "";
+    } else {
+      alert("Please fill the form correctly");
+    }
+  };
   return (
     <>
       <Navbar />
@@ -287,20 +300,22 @@ const LoginPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <label htmlFor="email">Email</label>
-                  <input type="email" id="email" />
+                  <label htmlFor="username">Username</label>
+                  <input type="text" id="login-username" />
                   <label htmlFor="password">Password</label>
-                  <input type="password" id="password" />
+                  <input type="password" id="login-password" />
 
                   <label htmlFor="role">Role</label>
-                  <select name="role" id="role">
+                  <select name="role" id="login-role">
                     {roleOptions.map((role, index) => (
                       <option key={index} value={role}>
                         {role}
                       </option>
                     ))}
                   </select>
-                  <button className="login-btn">Login</button>
+                  <button className="login-btn" onClick={handleLogin}>
+                    Login
+                  </button>
                   <div className="forgot-password">
                     <a href="/password-reset">Forgot Password?</a>
                   </div>

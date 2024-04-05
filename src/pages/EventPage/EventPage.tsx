@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import ReviewsAccordian from "../../componets/ReviewsAccordian/ReviewsAccordian";
 import { useEffect, useState } from "react";
 import ReviewForm from "../../componets/ReviewForm/ReviewForm";
+import Footer from "../../componets/UI/Footer/Footer";
 const EventPage: React.FC = () => {
   const [overallRating, setOverallRating] = useState<number>(0);
   const { eventId } = useParams();
@@ -63,7 +64,7 @@ const EventPage: React.FC = () => {
   };
   useEffect(() => {
     overallRatingHandler();
-  }, [identifiedEvent.reviews]);
+  }, [date]);
   return (
     <>
       <Navbar />
@@ -129,6 +130,7 @@ const EventPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

@@ -4,11 +4,17 @@ import "./PasswordResetPage.css";
 import passwordResetImg from "../../assets/Reset password-cuate.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import useApi from "../../hooks/apiHook";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../../store/loading-store";
 const PasswordResetPage = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [username, setUsername] = useState("");
   const [isOtpValidated, setIsOtpValidated] = useState(false);
   const [isPasswordReset, setIsPasswordReset] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { sendOtp } = useApi();
   return (
     <>
       <Navbar />
@@ -50,9 +56,15 @@ const PasswordResetPage = () => {
             )}
             {!isEmailSent && !isOtpValidated && !isPasswordReset && (
               <>
-                <h2>Enter Your Email</h2>
+                <h2>Enter Your Username</h2>
                 <div className="email-input">
-                  <input type="text" placeholder="Email" />
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                  />
                 </div>
                 <p id="reset-password-text">
                   We will send you a link to reset your password. If you don't
@@ -60,7 +72,27 @@ const PasswordResetPage = () => {
                   you registered with, check your spam folder or request another
                   email.
                 </p>
-                <div className="next-btn" onClick={() => setIsEmailSent(true)}>
+                <div
+                  className="next-btn"
+                  onClick={async () => {
+                    dispatch(
+                      loadingActions.setLoading({
+                        isLoading: true,
+                        message: "Sending OTP",
+                      })
+                    );
+                    await sendOtp(username).then((res) => {
+                      dispatch(
+                        loadingActions.setLoading({
+                          isLoading: false,
+                          message: "",
+                        })
+                      );
+                      setIsEmailSent(true);
+                      console.log(res);
+                    });
+                  }}
+                >
                   <p>
                     Next <i className="bi bi-arrow-right-circle-fill" />
                   </p>

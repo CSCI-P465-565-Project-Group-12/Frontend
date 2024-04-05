@@ -16,6 +16,7 @@
   width: 80%;
   justify-content: space-between;
 }
+
 .user-details-2 {
   flex-wrap: wrap;
 }
@@ -37,10 +38,22 @@
   font-size: inherit;
   font-weight: inherit;
 }
+
 .edit-icon {
   color: #caf0f8;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+.save-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  flex-direction: row;
+  margin: 1rem 0;
+  padding: 0.5em;
+  border-bottom: 1px solid #caf0f8;
+  transition: height 0.6s forwards;
 }
 .user-payment-details {
   flex-direction: column;
