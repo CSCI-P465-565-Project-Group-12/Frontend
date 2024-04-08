@@ -11,6 +11,7 @@ import PasswordResetPage from "./pages/PasswordResetPage/PasswordResetPage";
 import EventsNearMePage from "./pages/EventsNearMePage/EventsNearMePage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import ManageEventPage from "./pages/ManageEventPage/ManageEventPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage/PaymentSuccessPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/register-success" element={<RegisterSuccessPage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/manage-event" element={<ManageEventPage />} />
+      <Route path="/payment-success" element={<PaymentSuccessPage />} />
     </Routes>
   );
 }

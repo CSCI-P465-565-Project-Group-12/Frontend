@@ -171,7 +171,7 @@ const LoginPage: React.FC = () => {
     ) as HTMLInputElement;
     const role = document.getElementById("login-role") as HTMLSelectElement;
     const data = {
-      email: username.value,
+      username: username.value,
       password: password.value,
     };
 

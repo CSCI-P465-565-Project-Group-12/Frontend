@@ -58,12 +58,56 @@ const useApi = () => {
           })
         );
         // alert("Something went wrong. Please try again.");
-        console.log(err);
-        alert("Invalid username or password.");
-        return false;
-        // const duoAuthUrl = err.response.data.url;
-        // window.location.href = duoAuthUrl;
+        // console.log(err);
+        // alert("Invalid username or password.");
+        const duoAuthUrl = err.response.data.url;
+        window.location.href = duoAuthUrl;
       });
+  };
+
+  const fetchProfile = async () => {
+    const response = await axios.get(baseApi + "profile", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      data: {
+        username: localStorage.getItem("username"),
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  };
+  const createProfile = async (data: any) => {
+    console.log(data);
+
+    await axios
+      .post(baseApi + "createprofile", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        alert("Profile created successfully.");
+        return res.data;
+      })
+      .catch((err) => {
+        alert("An error occurred while creating the profile.");
+        console.log(err.response);
+        return err.response.data;
+      });
+  };
+  const updateProfile = async (data: any) => {
+    const response = await axios.post(
+      baseApi + "updateprofile",
+      { updateParams: data },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
   };
   const addressSearch = async (address: string) => {
     const response = await axios.get(
@@ -113,6 +157,9 @@ const useApi = () => {
   return {
     register,
     login,
+    fetchProfile,
+    createProfile,
+    updateProfile,
     addressSearch,
     validateUserTokenForNormalUser,
     sendOtp,

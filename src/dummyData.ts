@@ -1,7 +1,7 @@
 export const events = [
   {
     title: "IU Hoosiers vs Northwestern Wildcats",
-    date: "2024-02-18",
+    date: "2024-04-18",
     venue: "Assembly Hall",
     time: "3:00 PM",
     category: "Sports",
@@ -37,7 +37,7 @@ export const events = [
   },
   {
     title: "McCormick Tribune Ice Rink",
-    date: "2024-01-11",
+    date: "2024-04-11",
     venue: "Millennium Park",
     category: "Sports",
     image: "https://cdn.choosechicago.com/uploads/2023/11/mpicerink-900x400.jpg",
@@ -72,7 +72,7 @@ export const events = [
   },
   {
     title: "Tampa Bay Chocolate Festival",
-    date: "2024-02-19",
+    date: "2024-04-19",
     venue: "Gulfview Square Mall",
     time: "10:00 AM - 5:00 PM",
     category: "Food",
@@ -109,7 +109,7 @@ export const events = [
   },
   {
     title: "United States Grand Prix",
-    date: "2024-10-25",
+    date: "2024-04-25",
     venue: "Circuit of the Americas",
     time: "2:00 PM",
     category: "Sports",

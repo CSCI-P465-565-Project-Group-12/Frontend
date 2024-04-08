@@ -23,7 +23,6 @@ const firebaseConfig = {
 };
 interface IChatProps {
   sender: string;
-  reciever: string;
   event: string;
 }
 
@@ -33,7 +32,7 @@ interface IMessage {
   timestamp: number;
 }
 
-const Chat: React.FC<IChatProps> = ({ sender, reciever, event }) => {
+const Chat: React.FC<IChatProps> = ({ sender, event }) => {
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<IMessage[]>([]);
 

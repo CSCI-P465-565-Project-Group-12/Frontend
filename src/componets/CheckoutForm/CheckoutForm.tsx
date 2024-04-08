@@ -5,12 +5,23 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import "./CheckoutForm.css";
-const CheckoutForm = () => {
+import axios from "axios";
+
+interface ICheckoutFormProps {
+  amount: number;
+  eventName: string;
+  eventLocation: string;
+  eventTime: string;
+  eventDate: string;
+  userName: string;
+}
+
+const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
   const stripe = useStripe();
   const elements = useElements();
-
+  const baseApi = import.meta.env.VITE_BASE_PAYMENTS_API;
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
-  const [emailInput, setEmailInput] = useState<string>("");
+  // const [emailInput, setEmailInput] = useState<string>("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,58 +38,53 @@ const CheckoutForm = () => {
       return;
     }
 
-    // Create the PaymentIntent and obtain clientSecret from your server endpoint
-    const res = await fetch("https://w62vcbqq83.us.aircode.run/payments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        currency: "usd",
-        email: emailInput,
-        amount: 120,
-        paymentMethodType: "card",
-      }),
-    });
+    const response = await axios.post(
+      `${baseApi}/create-payment-intent`,
+      { amount: props.amount * 100 },
+      {
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_STRIPE_SK}`,
+        },
+      }
+    );
+    const data = await response.data;
+    const { clientSecret } = data;
 
-    const { client_secret: clientSecret } = await res.json();
-
+    // Confirm the payment with the client secret
     const { error } = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
-      elements,
-      clientSecret,
+      elements: elements,
       confirmParams: {
-        return_url: `${window.location.origin}/success`,
+        return_url: `${window.location.origin}/payment-success`,
       },
+      clientSecret,
+      redirect: "always",
     });
 
     if (error) {
+      // Show error to your customer
       setErrorMessage(error.message);
     } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
+      // Payment succeeded, handle success case
+      console.log("Payment succeeded!");
     }
   };
-  return (
-    <>
-      <div className="checkout-form-container">
-        <form onSubmit={handleSubmit}>
-          <PaymentElement className="payment-element" />
 
-          <button
-            disabled={!stripe || !elements}
-            style={{
-              marginTop: "20px",
-              width: "100%",
-            }}
-          >
-            Pay
-          </button>
-          {errorMessage && <div>{errorMessage}</div>}
-        </form>
-      </div>
-    </>
+  return (
+    <div className="checkout-form-container">
+      <form onSubmit={handleSubmit}>
+        <PaymentElement className="payment-element" />
+        <button
+          disabled={!stripe || !elements}
+          style={{
+            marginTop: "20px",
+            width: "100%",
+          }}
+        >
+          Pay
+        </button>
+        {errorMessage && <div>{errorMessage}</div>}
+      </form>
+    </div>
   );
 };
 

@@ -20,7 +20,7 @@ const BookedEvents: React.FC<IBookedEvents> = (props) => {
             <div className="event-image">
               <img src={event.image} alt={event.title} />
             </div>
-            <div className="event-details">
+            <div className="event-key-details">
               <h3>{event.title}</h3>
               <p>{event.venue}</p>
               <p>{event.date}</p>

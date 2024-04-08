@@ -88,17 +88,9 @@ const ManageEventPage: React.FC = () => {
           {googleUser && user === null ? (
             <h2>Please Login to chat </h2>
           ) : googleUser !== null ? (
-            <Chat
-              sender={googleUser.email}
-              reciever={identifiedVenueOwner}
-              event={bookedEvent.title}
-            />
+            <Chat sender={googleUser.email} event={bookedEvent.title} />
           ) : (
-            <Chat
-              sender={user.email}
-              reciever={identifiedVenueOwner}
-              event={bookedEvent.title}
-            />
+            <Chat sender={user.email} event={bookedEvent.title} />
           )}
         </div>
       </div>

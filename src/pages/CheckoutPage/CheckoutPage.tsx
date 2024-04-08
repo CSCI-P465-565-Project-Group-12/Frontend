@@ -66,7 +66,14 @@ const CheckoutPage: React.FC = () => {
                 </h2>
 
                 <Elements stripe={stripePromise} options={options}>
-                  <CheckoutForm />
+                  <CheckoutForm
+                    amount={checkout.amount}
+                    eventName={checkout.eventName}
+                    eventLocation={checkout.eventLocation}
+                    eventTime={checkout.eventTime}
+                    eventDate={checkout.eventDate}
+                    userName={checkout.userName}
+                  />
                 </Elements>
               </div>
             </div>

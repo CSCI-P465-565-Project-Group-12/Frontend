@@ -2,6 +2,7 @@ import ReactCreditCards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import "./UserProfile.css";
 import { useEffect, useState } from "react";
+import useApi from "../../hooks/apiHook";
 
 const dummyCardDetails = {
   number: "5011 0544 8859 7827",
@@ -24,6 +25,7 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
   const [user, setUser] = useState({
     name: props.name,
     email: props.email,
+    bio: props.bio,
     username: props.username,
     phone: props.phone,
     address: props.address,
@@ -33,18 +35,85 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
     name: false,
     email: false,
     username: false,
+    bio: false,
     phone: false,
     address: false,
   });
   const [isCardEditing, setIsCardEditing] = useState(false);
-  console.log(isUserEditing);
+  const { fetchProfile, createProfile, updateProfile } = useApi();
+  // console.log(isUserEditing);
+  const onSaveDetails = async () => {
+    console.log("just before udpdating", user);
+
+    const updatedProfile = await updateProfile({
+      first_name: user.name.split(" ")[0],
+      last_name: user.name.split(" ")[1] || "",
+      contact_number: user.phone,
+      bio: user.bio,
+      address: user.address,
+    });
+    setIsUserEditing({
+      name: false,
+      email: false,
+      username: false,
+      bio: false,
+      phone: false,
+      address: false,
+    });
+    if (updatedProfile) {
+      alert("Profile updated successfully");
+      console.log("updated profile", updatedProfile);
+
+      setUser({
+        name: updatedProfile.first_name + " " + updatedProfile.last_name,
+        email: props.email,
+        bio: updatedProfile.bio,
+        username: props.username,
+        phone: updatedProfile.contact_number,
+        address: updatedProfile.address,
+      });
+    } else {
+      alert("An error occurred while updating the profile.");
+    }
+  };
+  useEffect(() => {
+    const checkForProfile = async () => {
+      const profile: any = await fetchProfile().then((res) => {
+        return res;
+      });
+      console.log(profile);
+
+      if (profile === undefined || null) {
+        const data = {
+          first_name: props.name.split(" ")[0],
+          last_name: props.name.split(" ")[1] || "",
+          contact_number: props.phone,
+          bio: props.bio,
+          address: props.address,
+        };
+        createProfile(data);
+      } else {
+        setUser({
+          name: profile.first_name + " " + profile.last_name,
+          email: props.email,
+          bio: profile.bio,
+          username: props.username,
+          phone: profile.contact_number,
+          address: profile.address,
+        });
+        console.log(user);
+      }
+    };
+    checkForProfile();
+  }, []);
   useEffect(() => {
     if (
       isUserEditing.name ||
       isUserEditing.email ||
       isUserEditing.username ||
       isUserEditing.phone ||
-      isUserEditing.address
+      isUserEditing.address ||
+      isUserEditing.bio
     ) {
       const userDetails2: HTMLDivElement = document.querySelector(
         ".user-details-2"
@@ -101,6 +170,7 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
                     });
                     if (isUserEditing.name) {
                       nameInput.style.border = "none";
+                      onSaveDetails();
                     } else {
                       nameInput.style.border = "1px solid #caf0f8";
                       nameInput.style.borderRadius = "5px";
@@ -145,6 +215,7 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
                     });
                     if (isUserEditing.email) {
                       emailInput.style.border = "none";
+                      onSaveDetails();
                     } else {
                       emailInput.style.border = "1px solid #caf0f8";
                       emailInput.style.borderRadius = "5px";
@@ -194,9 +265,57 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
                     });
                     if (isUserEditing.username) {
                       usernameInput.style.border = "none";
+                      onSaveDetails();
                     } else {
                       usernameInput.style.border = "1px solid #caf0f8";
                       usernameInput.style.borderRadius = "5px";
+                    }
+                  }}
+                />
+              </span>
+            </p>
+            <p className="user-bio">
+              <span
+                style={{
+                  fontWeight: "bold",
+                }}
+              >
+                Bio:
+              </span>{" "}
+              <textarea
+                cols={30}
+                rows={1}
+                placeholder="Bio"
+                value={user.bio}
+                className="user-input"
+                onChange={(e) => {
+                  setUser({
+                    ...user,
+                    bio: e.target.value,
+                  });
+                }}
+                disabled={isUserEditing.bio ? false : true}
+              />
+              <span className="edit-icon">
+                <i
+                  className={
+                    isUserEditing.bio ? "bi bi-check" : "bi bi-pencil-square"
+                  }
+                  onClick={() => {
+                    const bioInput: HTMLTextAreaElement =
+                      document.querySelector(
+                        ".user-bio textarea"
+                      ) as HTMLTextAreaElement;
+                    setIsUserEditing({
+                      ...isUserEditing,
+                      bio: !isUserEditing.bio,
+                    });
+                    if (isUserEditing.bio) {
+                      bioInput.style.border = "none";
+                      onSaveDetails();
+                    } else {
+                      bioInput.style.border = "1px solid #caf0f8";
+                      bioInput.style.borderRadius = "5px";
                     }
                   }}
                 />
@@ -238,6 +357,7 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
                     });
                     if (isUserEditing.phone) {
                       phoneInput.style.border = "none";
+                      onSaveDetails();
                     } else {
                       phoneInput.style.border = "1px solid #caf0f8";
                       phoneInput.style.borderRadius = "5px";
@@ -286,6 +406,7 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
                     });
                     if (isUserEditing.address) {
                       addressInput.style.border = "none";
+                      onSaveDetails();
                     } else {
                       addressInput.style.border = "1px solid #caf0f8";
                       addressInput.style.borderRadius = "5px";
@@ -295,15 +416,6 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
               </span>
             </p>
           </div>
-          {isUserEditing.name ||
-          isUserEditing.email ||
-          isUserEditing.username ||
-          isUserEditing.phone ||
-          isUserEditing.address ? (
-            <div className="save-details">
-              <button>Save Details</button>
-            </div>
-          ) : null}
 
           <div className="user-payment-details">
             <h2>Payment Details</h2>
