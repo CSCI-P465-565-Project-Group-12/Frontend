@@ -6,6 +6,9 @@ import {
 } from "@stripe/react-stripe-js";
 import "./CheckoutForm.css";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setLoading, unSetLoading } from "../../store/payment-loader-store";
+import { setBookedEvent } from "../../store/booked-event-store";
 
 interface ICheckoutFormProps {
   amount: number;
@@ -22,18 +25,26 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
   const baseApi = import.meta.env.VITE_BASE_PAYMENTS_API;
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   // const [emailInput, setEmailInput] = useState<string>("");
-
+  const dispatch = useDispatch();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (elements == null || stripe == null) {
       return;
     }
-
-    // Trigger form validation and wallet collection
+    dispatch(setLoading());
+    dispatch(
+      setBookedEvent({
+        eventName: props.eventName,
+        eventLocation: props.eventLocation,
+        eventTime: props.eventTime,
+        eventDate: props.eventDate,
+      })
+    );
     const { error: submitError } = await elements.submit();
     if (submitError?.message) {
       // Show error to your customer
+      dispatch(unSetLoading());
       setErrorMessage(submitError.message);
       return;
     }
@@ -51,6 +62,7 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
     const { clientSecret } = data;
 
     // Confirm the payment with the client secret
+
     const { error } = await stripe.confirmPayment({
       elements: elements,
       confirmParams: {
@@ -59,8 +71,9 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
       clientSecret,
       redirect: "always",
     });
-
+    dispatch(unSetLoading());
     if (error) {
+      dispatch(unSetLoading());
       // Show error to your customer
       setErrorMessage(error.message);
     } else {

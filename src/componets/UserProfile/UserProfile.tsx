@@ -19,6 +19,7 @@ interface IUserProfileProps {
   username: string;
   phone: string;
   address: string;
+  setUsersName: (name: string) => void;
 }
 const UserProfile: React.FC<IUserProfileProps> = (props) => {
   const [cardDetails, setCardDetails] = useState(dummyCardDetails);
@@ -63,7 +64,9 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
     if (updatedProfile) {
       alert("Profile updated successfully");
       console.log("updated profile", updatedProfile);
-
+      props.setUsersName(
+        updatedProfile.first_name + " " + updatedProfile.last_name
+      );
       setUser({
         name: updatedProfile.first_name + " " + updatedProfile.last_name,
         email: props.email,

@@ -7,6 +7,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../componets/CheckoutForm/CheckoutForm";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import PaymentLoader from "../../componets/UI/PaymentLoader/PaymentLoader";
 
 interface ICheckout {
   amount: number;
@@ -107,7 +108,7 @@ const CheckoutPage: React.FC = () => {
           </div>
         </>
       )}
-
+      <PaymentLoader />
       <Footer />
     </>
   );

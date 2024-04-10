@@ -11,6 +11,7 @@ import { loadingActions } from "../../store/loading-store";
 import { googleUserActions } from "../../store/google-user-store";
 import { events } from "../../dummyData";
 import BookedEvents from "../../componets/BookedEvents/BookedEvents";
+import useApi from "../../hooks/apiHook";
 
 interface IEvents {
   title: string;
@@ -38,23 +39,43 @@ const dummyUser: IUser = {
 };
 
 const UserProfilePage: React.FC = () => {
+  const [usersName, setUsersName] = useState<string>("Add Your Name");
   const [selectedOption, setSelectedOption] = useState<string>("");
   const location = useLocation();
   const dispatch = useDispatch();
   const normalUser: INormalUser = useSelector((state: any) => state.normalUser);
-  console.log(normalUser);
+  const { fetchProfile } = useApi();
+  // console.log(normalUser);
+  const setUsersNameHandler = (name: string) => {
+    setUsersName(name);
+  };
 
-  const loginType = location.state.loginType || "";
+  useEffect(() => {
+    const checkForProfile = async () => {
+      const profile: any = await fetchProfile().then((res) => {
+        return res;
+      });
+      console.log(profile);
+
+      if (profile !== undefined) {
+        setUsersName(profile.first_name + " " + profile.last_name);
+      }
+    };
+    checkForProfile();
+  }, []);
+  const loginType = location.state?.loginType || "";
   let googleUser: any = null;
-  if (loginType === "google") {
+  if (loginType === "google" && location.state.googleCred !== undefined) {
     const googleCred = location.state.googleCred;
     googleUser = jwtDecode(googleCred.credential);
+
     dispatch(
       googleUserActions.setGoogleUser({
         name: googleUser.name,
         email: googleUser.email,
       })
     );
+
     // setGoogleUser(user);
     dispatch(
       loadingActions.setLoading({
@@ -62,7 +83,17 @@ const UserProfilePage: React.FC = () => {
         message: "",
       })
     );
+  } else {
+    googleUser = useSelector((state: any) => state.googleUser);
+
+    dispatch(
+      loadingActions.setLoading({
+        isLoading: false,
+        message: "",
+      })
+    );
   }
+
   const navigate = useNavigate();
 
   const previewProfilePic = (event: any) => {
@@ -135,7 +166,8 @@ const UserProfilePage: React.FC = () => {
               )}
             </div>
             <div className="profile-info">
-              <h2>{googleUser !== null ? googleUser.name : "Add your name"}</h2>
+              <h2>{googleUser !== null && googleUser.name}</h2>
+              <h2>{usersName.length > 0 ? usersName : "Add Your Name"}</h2>
               <p>{googleUser !== null && googleUser.email}</p>
               <p>{normalUser !== null && normalUser.email}</p>
             </div>
@@ -208,6 +240,7 @@ const UserProfilePage: React.FC = () => {
                 phone=""
                 address=""
                 id=""
+                setUsersName={setUsersNameHandler}
               />
             ) : (
               <UserProfile
@@ -218,6 +251,7 @@ const UserProfilePage: React.FC = () => {
                 phone=""
                 address=""
                 id={normalUser.id}
+                setUsersName={setUsersNameHandler}
               />
             ))}
         </div>

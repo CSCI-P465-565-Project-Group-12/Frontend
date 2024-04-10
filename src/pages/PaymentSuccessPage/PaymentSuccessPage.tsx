@@ -2,9 +2,15 @@ import { useNavigate } from "react-router";
 import successImg from "../../assets/Successful purchase-pana.png";
 import Footer from "../../componets/UI/Footer/Footer";
 import Navbar from "../../componets/UI/Navbar/Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { resetBookedEvent } from "../../store/booked-event-store";
 
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const bookedEvent = useSelector((state: any) => state.bookedEvent);
+  console.log(bookedEvent);
+
   return (
     <>
       <Navbar />
@@ -14,7 +20,7 @@ const PaymentSuccessPage = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          height: "100vh",
+          height: "100%",
         }}
       >
         <h1>Payment Successful!</h1>
@@ -29,9 +35,40 @@ const PaymentSuccessPage = () => {
             maxHeight: "600px",
           }}
         />
-        <button style={{ marginTop: "20px" }} onClick={() => navigate("/")}>
-          Home
-        </button>
+        <h2>
+          You have successfully booked {bookedEvent.eventName} on{" "}
+          {bookedEvent.eventDate} at {bookedEvent.eventTime}
+        </h2>
+        <h2>Thank you for booking with us!</h2>
+        <h2>Enjoy your event!</h2>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: "20px",
+            justifyContent: "space-between",
+            gap: "20px",
+          }}
+        >
+          <button
+            style={{ marginTop: "20px" }}
+            onClick={() => {
+              dispatch(resetBookedEvent());
+              navigate("/");
+            }}
+          >
+            Go back to Home
+          </button>
+          <button
+            style={{ marginTop: "20px" }}
+            onClick={() => {
+              dispatch(resetBookedEvent());
+              navigate("/user");
+            }}
+          >
+            Go to Profile
+          </button>
+        </div>
       </div>
       <Footer />
     </>
