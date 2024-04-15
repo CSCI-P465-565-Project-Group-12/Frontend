@@ -7,6 +7,7 @@ import { loadingActions } from "../store/loading-store";
 
 const useApi = () => {
   const baseApi = import.meta.env.VITE_BASE_API as string;
+  const vabApi = import.meta.env.VITE_BASE_VAB_API as string;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const register = async (data: any) => {
@@ -138,7 +139,22 @@ const useApi = () => {
         return err.response.data;
       });
   };
-
+  const getAllVenues = async () => {
+    const response = await axios.get(vabApi + "venues", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  };
+  const getAllEvents = async () => {
+    const response = await axios.get(vabApi + "activities", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  };
   const sendOtp = async (username: string) => {
     await axios
       .post(baseApi + "sendotp", username, {
@@ -162,6 +178,8 @@ const useApi = () => {
     updateProfile,
     addressSearch,
     validateUserTokenForNormalUser,
+    getAllVenues,
+    getAllEvents,
     sendOtp,
   };
 };

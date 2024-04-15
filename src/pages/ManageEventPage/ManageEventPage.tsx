@@ -2,11 +2,11 @@ import { useLocation, useNavigate } from "react-router";
 import Footer from "../../componets/UI/Footer/Footer";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./ManageEventPage.css";
-import { venueOwners } from "../../dummyData";
+import { venues } from "../../dummyData";
 import Chat from "../../componets/Chat/Chat";
 import { useSelector } from "react-redux";
 interface IBookedEvent {
-  title: string;
+  name: string;
   date: string;
   venue: string;
   image: string;
@@ -20,8 +20,8 @@ const ManageEventPage: React.FC = () => {
   const googleUser = useSelector((state: any) => state.googleUser);
 
   const bookedEvent: IBookedEvent = location.state.bookedEvent;
-  const identifiedVenueOwner: any = venueOwners.find(
-    (venueOwner) => venueOwner.events[0].title === bookedEvent.title
+  const identifiedVenueOwner: any = venues.find(
+    (venue) => venue.activities[0].name === bookedEvent.name
   )?.name;
   return (
     <>
@@ -36,8 +36,8 @@ const ManageEventPage: React.FC = () => {
         </h1>
         <div className="manageEvents-container">
           <div className="bookedEvent-detail">
-            <h2>{bookedEvent.title}</h2>
-            <img src={bookedEvent.image} alt={bookedEvent.title} />
+            <h2>{bookedEvent.name}</h2>
+            <img src={bookedEvent.image} alt={bookedEvent.name} />
             <p>
               By <span id="venue-owner-name">{identifiedVenueOwner}</span>
             </p>
@@ -52,7 +52,7 @@ const ManageEventPage: React.FC = () => {
             </p>
             <button
               onClick={() => {
-                navigate(`/event/${bookedEvent.title}`, {
+                navigate(`/event/${bookedEvent.name}`, {
                   state: { event: bookedEvent },
                 });
               }}
@@ -88,9 +88,9 @@ const ManageEventPage: React.FC = () => {
           {googleUser && user === null ? (
             <h2>Please Login to chat </h2>
           ) : googleUser !== null ? (
-            <Chat sender={googleUser.email} event={bookedEvent.title} />
+            <Chat sender={googleUser.email} event={bookedEvent.name} />
           ) : (
-            <Chat sender={user.email} event={bookedEvent.title} />
+            <Chat sender={user.email} event={bookedEvent.name} />
           )}
         </div>
       </div>

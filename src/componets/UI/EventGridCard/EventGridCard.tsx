@@ -3,9 +3,12 @@ import "./EventGridCard.css";
 interface EventGridCardProps {
   title: string;
   date: string;
-  venue: string;
+  venueName?: string;
   image: string;
   noOdTicketsSold?: number;
+  venueId: string;
+  event?: any;
+  venue?: any;
 }
 const EventGridCard: React.FC<EventGridCardProps> = (props) => {
   const navigate = useNavigate();
@@ -21,11 +24,13 @@ const EventGridCard: React.FC<EventGridCardProps> = (props) => {
       <div className="event-grid-card-content">
         <h3 className="event-grid-card-title">{props.title}</h3>
         <p className="event-grid-card-date">{props.date}</p>
-        <p className="event-grid-card-location">{props.venue}</p>
+        <p className="event-grid-card-location">{props.venueName}</p>
         <button
           className="view-more-btn"
           onClick={() => {
-            navigate(`/event/${props.title}`);
+            navigate(`/event/${props.venueName}`, {
+              state: { event: props.event, venue: props.venue },
+            });
           }}
         >
           View More

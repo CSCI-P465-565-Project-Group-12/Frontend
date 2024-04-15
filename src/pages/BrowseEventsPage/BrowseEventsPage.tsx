@@ -5,63 +5,81 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./BrowseEventsPage.css";
 import { useEffect, useState } from "react";
 import Footer from "../../componets/UI/Footer/Footer";
-let events = [
-  {
-    title: "IU Hoosiers vs Northwestern Wildcats",
-    date: "2024-02-18",
-    venue: "Assembly Hall",
-    time: "3:00 PM",
-    category: "Sports",
-    image:
-      "https://cdn.vox-cdn.com/thumbor/5d-NuwLaj1O8-Cqn203pYpbvO3M=/0x0:4096x2730/1200x800/filters:focal(1721x1038:2375x1692)/cdn.vox-cdn.com/uploads/chorus_image/image/71981748/FpDehdlWcAAnJLi.0.jpg",
-  },
-  {
-    title: "McCormick Tribune Ice Rink",
-    date: "2024-01-11",
-    venue: "Millennium Park",
-    category: "Sports",
-    image:
-      "https://cdn.choosechicago.com/uploads/2023/11/mpicerink-900x400.jpg",
-  },
-  {
-    title: "Tampa Bay Chocolate Festival",
-    date: "2024-02-19",
-    venue: "Gulfview Square Mall",
-    time: "10:00 AM - 5:00 PM",
-    category: "Food",
-    image:
-      "https://thatssotampa.com/wp-content/uploads/2023/12/ChocFestNew.jpg",
-  },
-  {
-    title: "United States Grand Prix",
-    date: "2024-10-25",
-    venue: "Circuit of the Americas",
-    time: "2:00 PM",
-    category: "Sports",
-    image:
-      "https://media.formula1.com/content/dam/fom-website/sutton/2022/USA/Sunday/1435987206.jpg.img.1536.high.jpg",
-  },
-  {
-    title: "Squash court reservation",
-    date: "2024-02-23",
-    venue: "IU Recreational Sports Center",
-    category: "Sports",
-    time: "6:00 PM",
-    image: "https://indianapublicmedia.org/images/news-images/srsc.jpg",
-  },
-  {
-    title: "Focus room reservation",
-    date: "2024-02-20",
-    venue: "Herman B Wells Library",
-    category: "Education",
-    time: "9:00 AM - 11:00 AM",
-    image:
-      "https://www.wbiw.com/wordpress/wp-content/uploads/2020/10/herman-library.jpg",
-  },
-];
+import useApi from "../../hooks/apiHook";
+import { IVenue } from "../../IVenue";
+
+// import { events } from "../../dummyData";
+// let events = [
+//   {
+//     title: "IU Hoosiers vs Northwestern Wildcats",
+//     date: "2024-02-18",
+//     venue: "Assembly Hall",
+//     time: "3:00 PM",
+//     category: "Sports",
+//     image:
+//       "https://cdn.vox-cdn.com/thumbor/5d-NuwLaj1O8-Cqn203pYpbvO3M=/0x0:4096x2730/1200x800/filters:focal(1721x1038:2375x1692)/cdn.vox-cdn.com/uploads/chorus_image/image/71981748/FpDehdlWcAAnJLi.0.jpg",
+//   },
+//   {
+//     title: "McCormick Tribune Ice Rink",
+//     date: "2024-01-11",
+//     venue: "Millennium Park",
+//     category: "Sports",
+//     image:
+//       "https://cdn.choosechicago.com/uploads/2023/11/mpicerink-900x400.jpg",
+//   },
+//   {
+//     title: "Tampa Bay Chocolate Festival",
+//     date: "2024-02-19",
+//     venue: "Gulfview Square Mall",
+//     time: "10:00 AM - 5:00 PM",
+//     category: "Food",
+//     image:
+//       "https://thatssotampa.com/wp-content/uploads/2023/12/ChocFestNew.jpg",
+//   },
+//   {
+//     title: "United States Grand Prix",
+//     date: "2024-10-25",
+//     venue: "Circuit of the Americas",
+//     time: "2:00 PM",
+//     category: "Sports",
+//     image:
+//       "https://media.formula1.com/content/dam/fom-website/sutton/2022/USA/Sunday/1435987206.jpg.img.1536.high.jpg",
+//   },
+//   {
+//     title: "Squash court reservation",
+//     date: "2024-02-23",
+//     venue: "IU Recreational Sports Center",
+//     category: "Sports",
+//     time: "6:00 PM",
+//     image: "https://indianapublicmedia.org/images/news-images/srsc.jpg",
+//   },
+//   {
+//     title: "Focus room reservation",
+//     date: "2024-02-20",
+//     venue: "Herman B Wells Library",
+//     category: "Education",
+//     time: "9:00 AM - 11:00 AM",
+//     image:
+//       "https://www.wbiw.com/wordpress/wp-content/uploads/2020/10/herman-library.jpg",
+//   },
+// ];
 const BrowseEventsPage = () => {
+  const [events, setEvents] = useState([]);
+  const [venues, setVenues] = useState<IVenue[]>([]);
   const currentFilters = useSelector((state: any) => state.filter);
-  const [filteredEvents, setFilteredEvents] = useState(events);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const { getAllEvents, getAllVenues } = useApi();
+  useEffect(() => {
+    getAllEvents().then((res) => {
+      setEvents(res);
+      setFilteredEvents(res);
+    });
+    getAllVenues().then((res) => {
+      setVenues(res);
+    });
+  }, []);
+  // console.log("events", events, "venues", venues);
+
   useEffect(() => {
     if (
       currentFilters.search === "" &&
@@ -74,35 +92,35 @@ const BrowseEventsPage = () => {
     if (currentFilters.search !== "") {
       setFilteredEvents(
         events.filter((event: any) =>
-          event.title
-            .toLowerCase()
-            .includes(currentFilters.search.toLowerCase())
+          event.name.toLowerCase().includes(currentFilters.search.toLowerCase())
         )
       );
     }
     if (currentFilters.categoryFilters.length > 0) {
       setFilteredEvents(
         events.filter((event: any) =>
-          currentFilters.categoryFilters.includes(event.category)
+          currentFilters.categoryFilters.includes(event.venueType)
         )
       );
     }
     if (currentFilters.locationFilters.length > 0) {
       setFilteredEvents(
-        events.filter((event: any) =>
-          currentFilters.locationFilters.includes(event.venue)
-        )
+        events.filter((event: any) => {
+          return currentFilters.locationFilters.includes(
+            venues.find((venue: any) => venue.id === event.venueId)?.city
+          );
+        })
       );
     }
     if (currentFilters.dateFilters.length > 0) {
       setFilteredEvents(
         events.filter((event: any) =>
-          currentFilters.dateFilters.includes(event.date)
+          currentFilters.dateFilters.includes(event.startTime.split("T")[0])
         )
       );
     }
   }, [currentFilters]);
-  console.log(filteredEvents);
+  // console.log("filteredEvents", filteredEvents);
 
   return (
     <>
@@ -112,15 +130,23 @@ const BrowseEventsPage = () => {
           <FilterBox />
         </div>
         <div className="all-events-container">
-          {filteredEvents.length > 0 ? (
+          {events.length > 0 ? (
             filteredEvents.map((event: any) => {
               return (
                 <EventGridCard
-                  title={event.title}
-                  date={event.date}
-                  venue={event.venue}
-                  image={event.image}
-                  key={event.title}
+                  title={event.name}
+                  date={event.startTime.split("T")[0]}
+                  venueName={
+                    venues.find((venue: any) => venue.id === event.venueId)
+                      ?.name
+                  }
+                  image={event.images[0]}
+                  key={event.name}
+                  venueId={event.venueId}
+                  event={event}
+                  venue={venues.find(
+                    (venue: any) => venue.id === event.venueId
+                  )}
                 />
               );
             })

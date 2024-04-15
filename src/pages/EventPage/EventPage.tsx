@@ -1,39 +1,83 @@
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import Calendar from "../../componets/UI/Calendar/Calendar";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 
 import "./EventPage.css";
-import { events } from "../../dummyData";
+// import { events } from "../../dummyData";
 import { useSelector } from "react-redux";
 import ReviewsAccordian from "../../componets/ReviewsAccordian/ReviewsAccordian";
 import { useEffect, useState } from "react";
 import ReviewForm from "../../componets/ReviewForm/ReviewForm";
 import Footer from "../../componets/UI/Footer/Footer";
+import { IEvent } from "../../IEvent";
+import { IVenue } from "../../IVenue";
 const EventPage: React.FC = () => {
   const [overallRating, setOverallRating] = useState<number>(0);
-  const { eventId } = useParams();
-  const identifiedEvent = events.find((event) => event.title === eventId);
-  if (!identifiedEvent) {
+  // const { venueId } = useParams();
+  const identifiedEvent = useLocation().state.event as IEvent;
+  const identifiedVenue = useLocation().state.venue as IVenue;
+  const details = JSON.parse(identifiedVenue.details);
+  if (!identifiedEvent || !identifiedVenue) {
     return <h2>Event not found</h2>;
   }
-  const date = new Date(identifiedEvent.date);
+  console.log(identifiedEvent, identifiedVenue);
+
+  const date = new Date(identifiedEvent.startTime);
   const day = date.getDate().toString();
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear().toString();
   const navigate = useNavigate();
   const googleUserName = useSelector((state: any) => state.googleUser.name);
   console.log(identifiedEvent);
+  // make dummy reviews
+  const reviews = [
+    {
+      id: "1",
+      rating: 5,
+      review: "This is a great event",
+      name: "John Doe",
+      date: "2021-10-20",
+    },
+    {
+      id: "2",
+      rating: 4,
+      review: "This is a great event",
+      name: "John Doe",
+      date: "2021-10-20",
+    },
+    {
+      id: "3",
+      rating: 3,
+      review: "This is a great event",
+      name: "John Doe",
+      date: "2021-10-20",
+    },
+    {
+      id: "4",
+      rating: 2,
+      review: "This is a great event",
+      name: "John Doe",
+      date: "2021-10-20",
+    },
+    {
+      id: "5",
+      rating: 1,
+      review: "This is a great event",
+      name: "John Doe",
+      date: "2021-10-20",
+    },
+  ];
 
   const redirectToCheckout = (e: any) => {
     e.preventDefault();
-    identifiedEvent.details.price === "Free"
+    identifiedEvent.cost === 0
       ? alert("Booking Successful")
       : navigate("/checkout", {
           state: {
             checkout: {
-              amount: identifiedEvent.details.price,
-              eventName: identifiedEvent.title,
-              eventLocation: identifiedEvent.details.location,
+              amount: identifiedEvent.cost,
+              eventName: identifiedEvent.name,
+              eventLocation: `${identifiedVenue.street}, ${identifiedVenue.city}, ${identifiedVenue.state}, ${identifiedVenue.zipcode}`,
               eventTime: `${day} ${month} ${year}`,
               eventDate: `${day} ${month} ${year}`,
               userName: googleUserName,
@@ -43,15 +87,17 @@ const EventPage: React.FC = () => {
   };
 
   const overallRatingHandler = () => {
-    if (identifiedEvent.reviews.length === 0) {
-      return;
-    }
-    const reviews = identifiedEvent.reviews;
+    // if (identifiedEvent.reviews.length === 0) {
+    //   return;
+    // }
+    // const reviews = identifiedEvent.reviews;
     let sum = 0;
-    reviews.forEach((review) => {
+    reviews.forEach((review: any) => {
       sum += review.rating!;
     });
-    setOverallRating(sum / reviews.length);
+
+    const overallRating = sum / reviews.length;
+    setOverallRating(overallRating);
     const outterMainCircle = document.querySelector(
       ".main-rating-circle-outter"
     ) as HTMLDivElement;
@@ -70,24 +116,24 @@ const EventPage: React.FC = () => {
       <Navbar />
       <div className="event-page-container">
         <div className="cover-image">
-          <img src={identifiedEvent.image} alt="event" />
+          <img src={identifiedEvent.coverImg} alt="event" />
         </div>
         <div className="event-details">
           <div className="event-details-container-1">
-            <h1>{identifiedEvent.title}</h1>
+            <h1>{identifiedEvent.name}</h1>
             <div className="event-category">
-              <p>{identifiedEvent.category}</p>
+              <p>{identifiedVenue.venueType}</p>
             </div>
-            <p>{identifiedEvent.details.description}</p>
+            <p>{details?.description}</p>
             <div className="event-notes">
               <h3>Venue Notes</h3>
               <ul>
-                {identifiedEvent.details.venueNotes?.split(".").map((note) => {
+                {details.venueNotes?.split(".").map((note: any) => {
                   return note ? <li>{note}</li> : null;
                 })}
               </ul>
             </div>
-            {identifiedEvent.reviews.length > 0 ? (
+            {reviews.length > 0 ? (
               <>
                 <div className="overall-rating">
                   <h1>Rated</h1>
@@ -97,30 +143,30 @@ const EventPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <ReviewsAccordian reviews={identifiedEvent.reviews} />
+                <ReviewsAccordian reviews={reviews} />
               </>
             ) : (
               <h3>No reviews yet</h3>
             )}
-            <ReviewForm eventName={identifiedEvent.title} />
+            <ReviewForm eventName={identifiedEvent.name} />
           </div>
           <div className="event-details-container-2">
             <div className="event-organizer">
               <h3>Event Organizer</h3>
-              <p>{identifiedEvent.details.eventOrganizer}</p>
+              <p>{details.eventOrganizer}</p>
             </div>
             <Calendar day={[day]} month={month} year={year} />
             <div className="event-info">
               <div className="event-location">
                 <h3>Location</h3>
-                <p>{identifiedEvent.details.location}</p>
+                <p>{`${identifiedVenue.street}, ${identifiedVenue.city}, ${identifiedVenue.state}, ${identifiedVenue.zipcode}`}</p>
               </div>
               <div className="event-cost">
                 <h3>Cost</h3>
                 <p>
-                  {identifiedEvent.details.price === "Free"
+                  {identifiedEvent.cost === 0
                     ? "Free"
-                    : `${identifiedEvent.details.price}`}
+                    : `${identifiedEvent.cost}`}
                 </p>
               </div>
             </div>
