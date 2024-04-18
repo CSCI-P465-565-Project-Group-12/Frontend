@@ -3,14 +3,23 @@ import successImg from "../../assets/Successful purchase-pana.png";
 import Footer from "../../componets/UI/Footer/Footer";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { resetBookedEvent } from "../../store/booked-event-store";
+import { resetRecentlyBookedEvent } from "../../store/booked-event-store";
+import useApi from "../../hooks/apiHook";
+import { useEffect } from "react";
 
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const bookedEvent = useSelector((state: any) => state.bookedEvent);
+  const bookedEvent = useSelector(
+    (state: any) => state.bookedEvent.recentlyBookedEvent
+  );
   console.log(bookedEvent);
-
+  const { changeReservationStatus, changePaymentStatus } = useApi();
+  useEffect(() => {
+    changeReservationStatus("confirmed");
+    changePaymentStatus();
+    dispatch(resetRecentlyBookedEvent());
+  }, []);
   return (
     <>
       <Navbar />
@@ -53,7 +62,6 @@ const PaymentSuccessPage = () => {
           <button
             style={{ marginTop: "20px" }}
             onClick={() => {
-              dispatch(resetBookedEvent());
               navigate("/");
             }}
           >
@@ -62,7 +70,6 @@ const PaymentSuccessPage = () => {
           <button
             style={{ marginTop: "20px" }}
             onClick={() => {
-              dispatch(resetBookedEvent());
               navigate("/user");
             }}
           >

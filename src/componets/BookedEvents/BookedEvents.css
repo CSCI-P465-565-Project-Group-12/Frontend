@@ -28,7 +28,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   width: 80%;
-  max-height: 20%;
+  height: 40%;
 }
 .event-key-details {
   display: flex;

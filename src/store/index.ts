@@ -6,16 +6,19 @@ import loginSlice from "./login-store";
 import googleUserSlice from "./google-user-store";
 import normalUserSlice from "./normal-user-store";
 import paymentLoaderSlice from "./payment-loader-store";
-import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
 import bookedEventSlice from "./booked-event-store";
 
-
+import sessionStorage from "redux-persist/lib/storage/session";
 
 const persistConfig = {
-    key: 'root',
-    storage: storage,
+    key: 'userProfile',
+    storage:sessionStorage,
+}
+const persistConfigForLogin = {
+    key: 'login',
+    storage:sessionStorage,
 }
 
 const store:Store = configureStore({
@@ -25,9 +28,9 @@ const store:Store = configureStore({
         loading: loadingSlice.reducer,
         paymentLoader: paymentLoaderSlice.reducer,
         filter: filterSlice.reducer,
-        login: persistReducer(persistConfig,loginSlice.reducer),
+        login: persistReducer(persistConfigForLogin,loginSlice.reducer),
         normalUser: persistReducer(persistConfig,normalUserSlice.reducer),
-        bookedEvent: persistReducer(persistConfig,bookedEventSlice.reducer),
+        bookedEvents: persistReducer(persistConfig,bookedEventSlice.reducer),
     }
 });
 export default store;

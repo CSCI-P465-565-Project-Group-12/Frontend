@@ -35,6 +35,7 @@ interface IMessage {
 const Chat: React.FC<IChatProps> = ({ sender, event }) => {
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<IMessage[]>([]);
+  console.log("sender", sender, "event", event);
 
   useEffect(() => {
     initializeApp(firebaseConfig);

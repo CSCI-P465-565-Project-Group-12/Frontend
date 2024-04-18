@@ -22,7 +22,7 @@ interface ICheckoutFormProps {
 const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
   const stripe = useStripe();
   const elements = useElements();
-  const baseApi = import.meta.env.VITE_BASE_PAYMENTS_API;
+  const baseApi = import.meta.env.VITE_PAYMENTS_API;
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   // const [emailInput, setEmailInput] = useState<string>("");
   const dispatch = useDispatch();
@@ -33,14 +33,14 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
       return;
     }
     dispatch(setLoading());
-    dispatch(
-      setBookedEvent({
-        eventName: props.eventName,
-        eventLocation: props.eventLocation,
-        eventTime: props.eventTime,
-        eventDate: props.eventDate,
-      })
-    );
+    // dispatch(
+    //   setBookedEvent({
+    //     eventName: props.eventName,
+    //     eventLocation: props.eventLocation,
+    //     eventTime: props.eventTime,
+    //     eventDate: props.eventDate,
+    //   })
+    // );
     const { error: submitError } = await elements.submit();
     if (submitError?.message) {
       // Show error to your customer

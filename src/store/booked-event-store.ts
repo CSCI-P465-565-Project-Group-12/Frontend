@@ -1,35 +1,52 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface IBookedEvent {
+export interface IBookedEvent {
+    eventId: string;
+    coverImg?: string;
     eventName: string;
     eventLocation: string;
     eventTime: string;
     eventDate: string;
+    venueName?: string;
+}
+export interface IBookedEvents {
+    bookedEvents: IBookedEvent[];
+    recentlyBookedEvent: IBookedEvent;
+}
+const intialState: IBookedEvents = {
+    bookedEvents: [],
+    recentlyBookedEvent: {
+        eventId: "",
+        eventName: "",
+        eventLocation: "",
+        eventTime: "",
+        eventDate: "",
+    }
 }
 
-const intialState: IBookedEvent = {
-    eventName: "",
-    eventLocation: "",
-    eventTime: "",
-    eventDate: "",
-}
 const bookedEventSlice = createSlice({
-    name: "bookedEvent",
+    name: "bookedEvents",
     initialState: intialState,
     reducers: {
-        setBookedEvent: (state, action) => {
-            state.eventName = action.payload.eventName;
-            state.eventLocation = action.payload.eventLocation;
-            state.eventTime = action.payload.eventTime;
-            state.eventDate = action.payload.eventDate;
+        setBookedEvent: (state:IBookedEvents, action:PayloadAction<IBookedEvent[]>) => {
+            state.bookedEvents = action.payload;
         },
         resetBookedEvent: (state) => {
-            state.eventName = "";
-            state.eventLocation = "";
-            state.eventTime = "";
-            state.eventDate = "";
+            state.bookedEvents = [];
+        },
+        setRecentlyBookedEvent: (state, action:PayloadAction<IBookedEvent>) => {
+            state.recentlyBookedEvent = action.payload;
+        },
+        resetRecentlyBookedEvent: (state) => {
+            state.recentlyBookedEvent = {
+                eventId: "",
+                eventName: "",
+                eventLocation: "",
+                eventTime: "",
+                eventDate: "",
+            }
         }
     }
 });
-export const { setBookedEvent, resetBookedEvent } = bookedEventSlice.actions;
+export const { setBookedEvent, resetBookedEvent,setRecentlyBookedEvent,resetRecentlyBookedEvent } = bookedEventSlice.actions;
 export default bookedEventSlice;

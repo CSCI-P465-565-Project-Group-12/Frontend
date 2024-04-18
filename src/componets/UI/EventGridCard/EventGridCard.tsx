@@ -6,7 +6,7 @@ interface EventGridCardProps {
   venueName?: string;
   image: string;
   noOdTicketsSold?: number;
-  venueId: string;
+  venueId?: string;
   event?: any;
   venue?: any;
 }

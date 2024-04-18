@@ -4,7 +4,7 @@ import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./EventsNearMePage.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
-import { events } from "../../dummyData";
+// import { events } from "../../dummyData";
 import useApi from "../../hooks/apiHook";
 interface ILocationCoords {
   location?: string;
@@ -17,6 +17,8 @@ interface INearbyEvent {
   distance: string;
 }
 const EventsNearMePage = () => {
+  const [events, setEvents] = useState<any[]>([]);
+  const [venues, setVenues] = useState<any[]>([]);
   const [locationCoords, setLocationCoords] = useState<ILocationCoords>({
     location: "",
     lat: 0,
@@ -25,7 +27,7 @@ const EventsNearMePage = () => {
   const [nearbyCoords, setNearbyCoords] = useState<ILocationCoords[]>([]);
   const [nearbyEvents, setNearbyEvents] = useState<INearbyEvent[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
-  const { addressSearch } = useApi();
+  const { addressSearch, getAllEvents, getAllVenues } = useApi();
 
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API_KEY as string;
   const map = useRef<any>();
@@ -70,12 +72,24 @@ const EventsNearMePage = () => {
     return distance;
   };
   useEffect(() => {
-    events.map((event) => {
-      setLocations((prev) => [...prev, event.details.location]);
+    getAllVenues().then((res) => {
+      setVenues(res);
     });
+    getAllEvents().then((res) => {
+      setEvents(res);
+    });
+    events.map((event) => {
+      setLocations((prev) => [
+        ...prev,
+        `${venues.find((venue) => venue.id === event.venueId).street}, ${
+          venues.find((venue) => venue.id === event.venueId).city
+        }, ${venues.find((venue) => venue.id === event.venueId).state}`,
+      ]);
+    });
+    console.log(locations);
 
     getLocation();
-  }, []);
+  }, [locationCoords.lat]);
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
@@ -112,45 +126,40 @@ const EventsNearMePage = () => {
       });
     }
   }, [locations]);
+
   useEffect(() => {
     let radius = 6000;
-    setNearbyEvents([]);
-    nearbyCoords
-      .filter((event) => {
-        let distance = calculateDistance(
-          event.lat,
-          event.lng,
+    const uniqueNearbyEvents = new Set(); // Create a Set to store unique event titles
+
+    nearbyCoords.forEach((coord) => {
+      events.forEach((event) => {
+        const venue = venues.find((venue) => venue.id === event.venueId);
+        const eventLocation = `${venue.street}, ${venue.city}, ${venue.state}`;
+        const distance = calculateDistance(
+          coord.lat,
+          coord.lng,
           center.lat,
           center.lng
         );
-        console.log(distance, event.location, center.lat, center.lng);
 
-        return distance < radius;
-      })
-      .map((coord) => {
-        events
-          .filter((event) => event.details.location === coord.location)
-          .map((event) => {
-            console.log(event.title, event.details.location, coord.location);
-
-            setNearbyEvents((prev) => [
-              ...prev,
-              {
-                title: event.title,
-                location: event.details.location,
-                distance: `${(
-                  calculateDistance(
-                    coord.lat,
-                    coord.lng,
-                    center.lat,
-                    center.lng
-                  ) / 1000
-                ).toFixed(2)}km`,
-              },
-            ]);
-          });
+        if (eventLocation === coord.location && distance < radius) {
+          const eventDetails = {
+            title: event.name,
+            location: eventLocation,
+            distance: `${(distance / 1000).toFixed(2)}km`,
+          };
+          uniqueNearbyEvents.add(JSON.stringify(eventDetails)); // Add stringified event details to Set
+        }
       });
-  }, [nearbyCoords, center]);
+    });
+
+    const newNearbyEvents = Array.from(uniqueNearbyEvents).map(
+      (eventString: any) => JSON.parse(eventString)
+    );
+
+    setNearbyEvents(newNearbyEvents);
+  }, [nearbyCoords, center, events, venues]);
+
   useEffect(() => {
     if (!map.current) return;
     const marker = new mapboxgl.Marker({

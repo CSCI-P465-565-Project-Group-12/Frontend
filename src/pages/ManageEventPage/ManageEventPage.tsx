@@ -2,27 +2,42 @@ import { useLocation, useNavigate } from "react-router";
 import Footer from "../../componets/UI/Footer/Footer";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 import "./ManageEventPage.css";
-import { venues } from "../../dummyData";
+
 import Chat from "../../componets/Chat/Chat";
 import { useSelector } from "react-redux";
-interface IBookedEvent {
-  name: string;
-  date: string;
-  venue: string;
-  image: string;
-  details?: any;
-}
+import useApi from "../../hooks/apiHook";
 
 const ManageEventPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useSelector((state: any) => state.normalUser);
-  const googleUser = useSelector((state: any) => state.googleUser);
 
-  const bookedEvent: IBookedEvent = location.state.bookedEvent;
-  const identifiedVenueOwner: any = venues.find(
-    (venue) => venue.activities[0].name === bookedEvent.name
-  )?.name;
+  const googleUser = useSelector((state: any) => state.googleUser);
+  const allBookedEvents = useSelector(
+    (state: any) => state.bookedEvents.bookedEvents
+  );
+  const bookedEventId = location.state.bookedEventId;
+  // console.log(allBookedEvents);
+  const userId = location.state.userId;
+  console.log("userId", userId);
+
+  const bookedEvent = allBookedEvents.find(
+    (event: any) => event.eventId === bookedEventId
+  );
+  console.log(bookedEvent);
+  const { changeReservationStatus } = useApi();
+
+  const onCancelEvent = () => {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this event?"
+    );
+    if (confirmCancel) {
+      changeReservationStatus("cancelled");
+      navigate("/");
+    }
+  };
+  console.log(`${bookedEvent.eventName}-${userId}`);
+
   return (
     <>
       <Navbar />
@@ -36,23 +51,23 @@ const ManageEventPage: React.FC = () => {
         </h1>
         <div className="manageEvents-container">
           <div className="bookedEvent-detail">
-            <h2>{bookedEvent.name}</h2>
-            <img src={bookedEvent.image} alt={bookedEvent.name} />
+            <h2>{bookedEvent.eventName}</h2>
+            <img src={bookedEvent.coverImg} alt={bookedEvent.name} />
+            {/* <p>
+              By <span id="venue-owner-name">{bookedEvent.venueName}</span>
+            </p> */}
             <p>
-              By <span id="venue-owner-name">{identifiedVenueOwner}</span>
+              Venue: <b>{bookedEvent.venueName}</b>
             </p>
             <p>
-              Venue: <b>{bookedEvent.venue}</b>
+              Date: <b>{bookedEvent.eventDate}</b>
             </p>
             <p>
-              Date: <b>{bookedEvent.date}</b>
-            </p>
-            <p>
-              Location: <b>{bookedEvent.details.location}</b>
+              Location: <b>{bookedEvent.eventLocation}</b>
             </p>
             <button
               onClick={() => {
-                navigate(`/event/${bookedEvent.name}`, {
+                navigate(`/event/${bookedEvent.eventName}`, {
                   state: { event: bookedEvent },
                 });
               }}
@@ -62,7 +77,7 @@ const ManageEventPage: React.FC = () => {
           </div>
           <div className="manageOptions-container">
             <h2>Manage Options</h2>
-            <div className="cancel-event-option">
+            <div className="cancel-event-option" onClick={onCancelEvent}>
               <i className="bi bi-trash" />
               <h2>Cancel Event</h2>
             </div>
@@ -87,10 +102,11 @@ const ManageEventPage: React.FC = () => {
           </h2>
           {googleUser && user === null ? (
             <h2>Please Login to chat </h2>
-          ) : googleUser !== null ? (
-            <Chat sender={googleUser.email} event={bookedEvent.name} />
           ) : (
-            <Chat sender={user.email} event={bookedEvent.name} />
+            <Chat
+              sender={user.username}
+              event={`${bookedEvent.eventName}-${userId}`}
+            />
           )}
         </div>
       </div>

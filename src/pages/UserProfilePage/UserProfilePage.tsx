@@ -9,22 +9,10 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store/loading-store";
 import { googleUserActions } from "../../store/google-user-store";
-import { events } from "../../dummyData";
 import BookedEvents from "../../componets/BookedEvents/BookedEvents";
 import useApi from "../../hooks/apiHook";
-
-interface IEvents {
-  title: string;
-  date: string;
-  venue: string;
-  image: string;
-  time?: string;
-}
-interface IUser {
-  name: string;
-  email: string;
-  events: IEvents[];
-}
+import { IBookedEvent, setBookedEvent } from "../../store/booked-event-store";
+import { IVenue } from "../../IVenue";
 
 interface INormalUser {
   id: string;
@@ -32,19 +20,48 @@ interface INormalUser {
   email: string;
 }
 
-const dummyUser: IUser = {
-  name: "John Doe",
-  email: "jdoe@iu.edu",
-  events: [events[0], events[2], events[3], events[4]],
-};
-
 const UserProfilePage: React.FC = () => {
   const [usersName, setUsersName] = useState<string>("Add Your Name");
   const [selectedOption, setSelectedOption] = useState<string>("");
   const location = useLocation();
-  const dispatch = useDispatch();
   const normalUser: INormalUser = useSelector((state: any) => state.normalUser);
+  console.log("normalUser", normalUser);
+
   const { fetchProfile } = useApi();
+  const [venues, setVenues] = useState<IVenue[]>([]);
+  const { getAllVenues, retrieveAllReservations } = useApi();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getAllVenues().then(async (res) => {
+      const response = await res;
+      setVenues(response);
+    });
+    console.log(venues);
+  }, []);
+  useEffect(() => {
+    retrieveAllReservations().then((res) => {
+      console.log(res);
+      let data: IBookedEvent[] = [];
+
+      res.forEach((event: any) => {
+        let identifiedVenue = venues.find(
+          (venue: any) => venue.id === event.venueId
+        );
+        console.log(identifiedVenue);
+
+        data.push({
+          eventId: event.id,
+          eventName: event.name,
+          eventDate: event.startTime.split("T")[0],
+          eventTime: event.startTime.split("T")[1],
+          coverImg: event.coverImg,
+          eventLocation: `${identifiedVenue?.street}, ${identifiedVenue?.city}, ${identifiedVenue?.state}, ${identifiedVenue?.zipcode}`,
+          venueName: identifiedVenue?.name,
+        });
+      });
+      dispatch(setBookedEvent(data));
+    });
+  }, []);
   // console.log(normalUser);
   const setUsersNameHandler = (name: string) => {
     setUsersName(name);
@@ -198,7 +215,7 @@ const UserProfilePage: React.FC = () => {
               }}
             >
               <i className="bi bi-calendar-event-fill"></i>
-              <a href="/">Events</a>
+              <a href="/">Booked Events</a>
             </div>
             <div
               className="link"
@@ -224,12 +241,8 @@ const UserProfilePage: React.FC = () => {
           </div>
         </div>
         <div className="user-profile">
-          {selectedOption === "Dashboard" && (
-            <UserDashboard events={dummyUser.events} />
-          )}
-          {selectedOption === "Events" && (
-            <BookedEvents bookedEvents={dummyUser.events} />
-          )}
+          {selectedOption === "Dashboard" && <UserDashboard />}
+          {selectedOption === "Events" && <BookedEvents />}
           {selectedOption === "Profile" &&
             (googleUser !== null ? (
               <UserProfile

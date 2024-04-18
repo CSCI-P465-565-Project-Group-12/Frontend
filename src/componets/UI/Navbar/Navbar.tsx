@@ -7,10 +7,16 @@ import { loginActions } from "../../../store/login-store";
 import useAuth from "../../../hooks/authHook";
 import { normalUserActions } from "../../../store/normal-user-store";
 import { googleUserActions } from "../../../store/google-user-store";
+import {
+  resetBookedEvent,
+  resetRecentlyBookedEvent,
+} from "../../../store/booked-event-store";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const isLoggedIn = useSelector((state: any) => state.login.isLoggedin);
+  console.log(isLoggedIn);
+
   const dispatch = useDispatch();
   const { googleLogoutHandler } = useAuth();
   useEffect(() => {
@@ -56,6 +62,8 @@ const Navbar = () => {
                   dispatch(loginActions.logout());
                   dispatch(normalUserActions.resetUser());
                   dispatch(googleUserActions.resetGoogleUser());
+                  dispatch(resetBookedEvent());
+                  dispatch(resetRecentlyBookedEvent());
                   localStorage.removeItem("token");
                   googleLogoutHandler();
                 }}

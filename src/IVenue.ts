@@ -1,6 +1,7 @@
 import { IEvent } from "./dummyData";
 
 export interface IVenue{
+    id?:string;
     name:string;
     state:string;
     city:string;

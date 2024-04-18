@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { normalUserActions } from "../store/normal-user-store";
 import { loginActions } from "../store/login-store";
@@ -65,7 +65,14 @@ const useApi = () => {
         window.location.href = duoAuthUrl;
       });
   };
-
+  const getUser = async (userId: string) => {
+    const response = await axios.get(baseApi + "user/" + userId, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  };
   const fetchProfile = async () => {
     const response = await axios.get(baseApi + "profile", {
       headers: {
@@ -130,23 +137,30 @@ const useApi = () => {
       .then((res) => {
         console.log(res.data);
 
+        dispatch(loginActions.login());
+        // console.log(useSelector((state: any) => state.login));
+
         dispatch(normalUserActions.setUser(res.data.jwtUserObj));
         dispatch(loadingActions.setLoading({ isLoading: false, message: "" }));
-        dispatch(loginActions.login());
         navigate("/user", { state: { loginType: "normal" } });
       })
       .catch((err) => {
         return err.response.data;
       });
   };
+
   const getAllVenues = async () => {
     const response = await axios.get(vabApi + "venues", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+    // console.log(response.data);
+
     return response.data;
   };
+
+  // events api
   const getAllEvents = async () => {
     const response = await axios.get(vabApi + "activities", {
       headers: {
@@ -155,6 +169,7 @@ const useApi = () => {
     });
     return response.data;
   };
+
   const sendOtp = async (username: string) => {
     await axios
       .post(baseApi + "sendotp", username, {
@@ -170,8 +185,67 @@ const useApi = () => {
         console.log(err.response.data);
       });
   };
+
+  // reservations api
+  const createReservation = async (data: any) => {
+    const response = await axios.post(vabApi + "reservation", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    localStorage.setItem("reservationId", response.data.id);
+    return response.status;
+  };
+
+  const changeReservationStatus = async (status: string) => {
+    const response = await axios.post(
+      vabApi +
+        `changeReservationStatus/${localStorage.getItem("reservationId")}`,
+      {
+        status: status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      alert("Activity status updated successfully.");
+    }
+    localStorage.removeItem("activityId");
+    return response.data;
+  };
+  const changePaymentStatus = async () => {
+    const response = await axios.post(
+      vabApi + `changePaymentStatus/${localStorage.getItem("reservationId")}`,
+      {
+        paymentStatus: "Completed",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      alert("Payment status updated successfully.");
+    }
+    localStorage.removeItem("reservationId");
+    return response.data;
+  };
+
+  const retrieveAllReservations = async () => {
+    const response = await axios.get(vabApi + "reservations/user", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  };
   return {
     register,
+    getUser,
     login,
     fetchProfile,
     createProfile,
@@ -181,6 +255,10 @@ const useApi = () => {
     getAllVenues,
     getAllEvents,
     sendOtp,
+    createReservation,
+    changeReservationStatus,
+    changePaymentStatus,
+    retrieveAllReservations,
   };
 };
 

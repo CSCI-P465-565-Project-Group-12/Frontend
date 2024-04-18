@@ -1,22 +1,34 @@
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Calendar from "../../componets/UI/Calendar/Calendar";
 import Navbar from "../../componets/UI/Navbar/Navbar";
 
 import "./EventPage.css";
 // import { events } from "../../dummyData";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReviewsAccordian from "../../componets/ReviewsAccordian/ReviewsAccordian";
 import { useEffect, useState } from "react";
 import ReviewForm from "../../componets/ReviewForm/ReviewForm";
 import Footer from "../../componets/UI/Footer/Footer";
 import { IEvent } from "../../IEvent";
 import { IVenue } from "../../IVenue";
+import useApi from "../../hooks/apiHook";
+import { setRecentlyBookedEvent } from "../../store/booked-event-store";
+
 const EventPage: React.FC = () => {
   const [overallRating, setOverallRating] = useState<number>(0);
   // const { venueId } = useParams();
   const identifiedEvent = useLocation().state.event as IEvent;
   const identifiedVenue = useLocation().state.venue as IVenue;
+  const bookedEvents = useSelector(
+    (state: any) => state.bookedEvents.bookedEvents
+  );
+  const checkIfBooked = bookedEvents.find(
+    (event: any) => event.eventId === identifiedEvent.id
+  );
+  // console.log(checkIfBooked, bookedEvents);
+
   const details = JSON.parse(identifiedVenue.details);
+  const { createReservation } = useApi();
   if (!identifiedEvent || !identifiedVenue) {
     return <h2>Event not found</h2>;
   }
@@ -28,7 +40,8 @@ const EventPage: React.FC = () => {
   const year = date.getFullYear().toString();
   const navigate = useNavigate();
   const googleUserName = useSelector((state: any) => state.googleUser.name);
-  console.log(identifiedEvent);
+  const dispatch = useDispatch();
+  // console.log(identifiedEvent);
   // make dummy reviews
   const reviews = [
     {
@@ -70,20 +83,40 @@ const EventPage: React.FC = () => {
 
   const redirectToCheckout = (e: any) => {
     e.preventDefault();
-    identifiedEvent.cost === 0
-      ? alert("Booking Successful")
-      : navigate("/checkout", {
-          state: {
-            checkout: {
-              amount: identifiedEvent.cost,
-              eventName: identifiedEvent.name,
-              eventLocation: `${identifiedVenue.street}, ${identifiedVenue.city}, ${identifiedVenue.state}, ${identifiedVenue.zipcode}`,
-              eventTime: `${day} ${month} ${year}`,
-              eventDate: `${day} ${month} ${year}`,
-              userName: googleUserName,
-            },
-          },
-        });
+    dispatch(
+      setRecentlyBookedEvent({
+        eventId: identifiedEvent.id || "",
+        eventName: identifiedEvent.name,
+        eventLocation: `${identifiedVenue.street}, ${identifiedVenue.city}, ${identifiedVenue.state}, ${identifiedVenue.zipcode}`,
+        eventTime: `${day} ${month} ${year}`,
+        eventDate: `${day} ${month} ${year}`,
+      })
+    );
+    // localStorage.setItem("activityId", identifiedEvent.id || "");
+    createReservation({
+      activityId: identifiedEvent.id,
+      venueId: identifiedVenue.id,
+    }).then((res) => {
+      if (res === 400 || 500) {
+        alert("Booking Successful");
+      }
+    });
+    if (identifiedEvent.cost === "0.00") {
+      alert("Booking Successful");
+      navigate("/payment-success");
+    }
+    navigate("/checkout", {
+      state: {
+        checkout: {
+          amount: identifiedEvent.cost,
+          eventName: identifiedEvent.name,
+          eventLocation: `${identifiedVenue.street}, ${identifiedVenue.city}, ${identifiedVenue.state}, ${identifiedVenue.zipcode}`,
+          eventTime: `${day} ${month} ${year}`,
+          eventDate: `${day} ${month} ${year}`,
+          userName: googleUserName,
+        },
+      },
+    });
   };
 
   const overallRatingHandler = () => {
@@ -164,15 +197,21 @@ const EventPage: React.FC = () => {
               <div className="event-cost">
                 <h3>Cost</h3>
                 <p>
-                  {identifiedEvent.cost === 0
+                  {identifiedEvent.cost === "0.00"
                     ? "Free"
                     : `${identifiedEvent.cost}`}
                 </p>
               </div>
             </div>
-            <button className="book-event-btn" onClick={redirectToCheckout}>
-              Book Event
-            </button>
+            {checkIfBooked ? (
+              <button className="book-event-btn" disabled>
+                Event Booked
+              </button>
+            ) : (
+              <button className="book-event-btn" onClick={redirectToCheckout}>
+                Book Event
+              </button>
+            )}
           </div>
         </div>
       </div>

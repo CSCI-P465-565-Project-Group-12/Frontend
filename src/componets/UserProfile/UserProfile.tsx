@@ -86,7 +86,7 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
       });
       console.log(profile);
 
-      if (profile === undefined || null) {
+      if (profile === null) {
         const data = {
           first_name: props.name.split(" ")[0],
           last_name: props.name.split(" ")[1] || "",

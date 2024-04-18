@@ -1,9 +1,10 @@
 
 export interface IEvent {
+    id?: string;
     name: string;
     venueId?: string;
     ageRange: string;
-    cost: number;
+    cost: string;
     capacity: number;
     activityStatus: string;
     startTime: string;

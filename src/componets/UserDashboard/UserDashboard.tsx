@@ -3,23 +3,17 @@ import EventGridCard from "../UI/EventGridCard/EventGridCard";
 import UserUpcomingEventCard from "../UI/UserUpcomingEventCard/UserUpcomingEventCard";
 import "./UserDashboard.css";
 import Calendar from "../UI/Calendar/Calendar";
+import { useSelector } from "react-redux";
+import { IBookedEvent } from "../../store/booked-event-store";
 
-interface IEvent {
-  title: string;
-  date: string;
-  venue: string;
-  image: string;
-  time?: string;
-  status?: string;
-}
-
-interface IEvents {
-  events: IEvent[];
-}
-
-const UserDashboard: React.FC<IEvents> = (props) => {
+const UserDashboard = () => {
   const [wish, setWish] = useState<string>("");
   const wishes: string[] = ["Good Morning", "Good Afternoon", "Good Evening"];
+  const bookedEvents: IBookedEvent[] = useSelector(
+    (state: any) => state.bookedEvents.bookedEvents
+  );
+  console.log(bookedEvents);
+
   useEffect(() => {
     const date = new Date();
 
@@ -33,17 +27,20 @@ const UserDashboard: React.FC<IEvents> = (props) => {
     }
   }, []);
   let days: string[] = [];
-  props.events
+  bookedEvents
     .filter((currentMonth) => {
-      return new Date(currentMonth.date).getMonth() === new Date().getMonth();
+      return (
+        new Date(currentMonth.eventDate).getMonth() === new Date().getMonth()
+      );
     })
     .filter((currentYear) => {
       return (
-        new Date(currentYear.date).getFullYear() === new Date().getFullYear()
+        new Date(currentYear.eventDate).getFullYear() ===
+        new Date().getFullYear()
       );
     })
     .forEach((event) => {
-      const date = new Date(event.date);
+      const date = new Date(event.eventDate);
       days.push(date.getDate().toString());
       console.log(days);
     });
@@ -63,21 +60,23 @@ const UserDashboard: React.FC<IEvents> = (props) => {
           <div className="upcoming-events-list">
             <h2>Upcoming Events</h2>
             <ul>
-              {props.events
+              {bookedEvents
                 .filter((event) => {
                   return (
-                    new Date(event.date).getFullYear() ===
+                    new Date(event.eventDate).getFullYear() ===
                     new Date().getFullYear()
                   );
                 })
                 .filter((event) => {
                   return (
-                    new Date(event.date).getMonth() === new Date().getMonth()
+                    new Date(event.eventDate).getMonth() ===
+                    new Date().getMonth()
                   );
                 })
                 .filter((event) => {
                   return (
-                    new Date(event.date).getDate() + 1 > new Date().getDate()
+                    new Date(event.eventDate).getDate() + 1 >
+                    new Date().getDate()
                   );
                 })
                 .map((event, index) => {
@@ -88,31 +87,36 @@ const UserDashboard: React.FC<IEvents> = (props) => {
                           fontWeight: "bold",
                         }}
                       >
-                        {event.title}
+                        {event.eventName}
                       </span>{" "}
-                      {event.date}
+                      {event.eventDate}
                     </li>
                   );
                 })}
             </ul>
           </div>
         </div>
-        <div className="user-upcoming-event">
+        {/* <div className="user-upcoming-event">
           <h2>Upcoming Event</h2>
-          {props.events.sort((a, b) => {
-            return new Date(a.date).getTime() - new Date(b.date).getTime();
-          })[0] === undefined ? (
-            <h2>No upcoming events</h2>
-          ) : (
-            <UserUpcomingEventCard
-              title={props.events[0].title}
-              date={props.events[0].date}
-              venue={props.events[0].venue}
-              image={props.events[0].image}
-              time={props.events[0].time}
-            />
-          )}
-        </div>
+          {bookedEvents
+            .sort((a, b) => {
+              return (
+                new Date(a.eventDate).getTime() -
+                new Date(b.eventDate).getTime()
+              );
+            })
+            .map((event, index) => {
+              return (
+                <UserUpcomingEventCard
+                  key={index}
+                  title={event.eventName}
+                  date={event.eventDate}
+                  venue={event.venueName || ""}
+                  image={event.coverImg || ""}
+                />
+              );
+            })}{" "}
+        </div> */}
         <h2
           style={{
             marginTop: "6rem",
@@ -121,18 +125,19 @@ const UserDashboard: React.FC<IEvents> = (props) => {
           Your Bookings
         </h2>
         <div className="user-bookings">
-          {props.events
+          {bookedEvents
             .filter((event) => {
-              return new Date(event.date).getTime() > new Date().getTime();
+              return new Date(event.eventDate).getTime() > new Date().getTime();
             })
             .map((event, index) => {
               return (
                 <EventGridCard
+                  venueId={bookedEvents[index].venueName || ""}
                   key={index}
-                  title={event.title}
-                  date={event.date}
-                  venue={event.venue}
-                  image={event.image}
+                  title={bookedEvents[index].eventName}
+                  date={bookedEvents[index].eventDate}
+                  venueName={bookedEvents[index].venueName || ""}
+                  image={bookedEvents[index].coverImg || ""}
                 />
               );
             })}
