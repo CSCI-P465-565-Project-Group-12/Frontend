@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./ReviewForm.css";
 
-interface IReviewProps {
-  eventName: string;
-}
-const ReviewForm: React.FC<IReviewProps> = (props) => {
+// interface IReviewProps {
+//   eventName: string;
+// }
+const ReviewForm = () => {
   const [review, setReview] = useState({
     name: "",
     rating: 0,

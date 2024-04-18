@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { normalUserActions } from "../store/normal-user-store";
 import { loginActions } from "../store/login-store";
