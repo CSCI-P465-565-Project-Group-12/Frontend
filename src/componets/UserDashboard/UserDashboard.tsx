@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EventGridCard from "../UI/EventGridCard/EventGridCard";
-import UserUpcomingEventCard from "../UI/UserUpcomingEventCard/UserUpcomingEventCard";
+// import UserUpcomingEventCard from "../UI/UserUpcomingEventCard/UserUpcomingEventCard";
 import "./UserDashboard.css";
 import Calendar from "../UI/Calendar/Calendar";
 import { useSelector } from "react-redux";
@@ -129,7 +129,7 @@ const UserDashboard = () => {
             .filter((event) => {
               return new Date(event.eventDate).getTime() > new Date().getTime();
             })
-            .map((event, index) => {
+            .map((_, index) => {
               return (
                 <EventGridCard
                   venueId={bookedEvents[index].venueName || ""}

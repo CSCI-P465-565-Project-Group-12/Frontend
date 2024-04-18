@@ -1,4 +1,3 @@
-import { IVenue } from "./IVenue";
 
 export interface IEvent {
     name: string;
@@ -88,7 +87,7 @@ export const events:IEvent[] = [
     coverImg: "https://www.wbiw.com/wordpress/wp-content/uploads/2020/10/herman-library.jpg",
   }
 ]
-export const venues:IVenue[]= [
+export const venues= [
   {
     name: "Simon Skjodt Assembly Hall",
     state: "Indiana",

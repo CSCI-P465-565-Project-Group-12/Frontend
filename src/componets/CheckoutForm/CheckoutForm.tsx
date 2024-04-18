@@ -8,7 +8,7 @@ import "./CheckoutForm.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setLoading, unSetLoading } from "../../store/payment-loader-store";
-import { setBookedEvent } from "../../store/booked-event-store";
+// import { setBookedEvent } from "../../store/booked-event-store";
 
 interface ICheckoutFormProps {
   amount: number;
@@ -22,7 +22,7 @@ interface ICheckoutFormProps {
 const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
   const stripe = useStripe();
   const elements = useElements();
-  const baseApi = import.meta.env.VITE_PAYMENTS_API;
+  const baseApi = import.meta.env.VITE_BASE_VAB_API;
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   // const [emailInput, setEmailInput] = useState<string>("");
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
     }
 
     const response = await axios.post(
-      `${baseApi}/create-payment-intent`,
+      `${baseApi}/createPaymentIntent`,
       { amount: props.amount * 100 },
       {
         headers: {
