@@ -68,7 +68,7 @@ const BookedEvents = () => {
                       ?.name
                   }
                 </p>
-                <p>{event.startTime.split("T")[0]}</p>
+                <p>{event.startTime}</p>
               </div>
               <div className="manage-event">
                 <button>
