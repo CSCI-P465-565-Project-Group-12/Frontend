@@ -181,7 +181,7 @@ const EventPage: React.FC = () => {
             ) : (
               <h3>No reviews yet</h3>
             )}
-            <ReviewForm eventName={identifiedEvent.name} />
+            <ReviewForm />
           </div>
           <div className="event-details-container-2">
             <div className="event-organizer">
