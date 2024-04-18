@@ -38,8 +38,8 @@ const BookedEvents = () => {
         data.push({
           eventId: event.id,
           eventName: event.name,
-          eventDate: event.startTime?.toString().split("T")[0],
-          eventTime: event.startTime?.toString().split("T")[1],
+          eventDate: event.startTime,
+          eventTime: event.startTime,
           coverImg: event.coverImg,
           eventLocation: `${identifiedVenue?.street}, ${identifiedVenue?.city}, ${identifiedVenue?.state}, ${identifiedVenue?.zipcode}`,
           venueName: identifiedVenue?.name,
