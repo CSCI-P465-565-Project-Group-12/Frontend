@@ -50,7 +50,7 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = (props) => {
     }
 
     const response = await axios.post(
-      `${baseApi}/createPaymentIntent`,
+      `${baseApi}createPaymentIntent`,
       { amount: props.amount * 100 },
       {
         headers: {

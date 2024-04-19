@@ -10,11 +10,15 @@ import { loadingActions } from "../../store/loading-store";
 const PasswordResetPage = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [reCheckPassword, setReCheckPassword] = useState("");
+  const [otp, setOtp] = useState("");
   const [isOtpValidated, setIsOtpValidated] = useState(false);
   const [isPasswordReset, setIsPasswordReset] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { sendOtp } = useApi();
+  const { sendOtp, verifyOtp, resetPassword } = useApi();
+
   return (
     <>
       <Navbar />
@@ -33,7 +37,13 @@ const PasswordResetPage = () => {
                 </div>
                 <h2>Otp</h2>
                 <div className="otp-input">
-                  <input type="text" placeholder="Otp" />
+                  <input
+                    type="text"
+                    placeholder="Otp"
+                    onChange={(e) => {
+                      setOtp(e.target.value);
+                    }}
+                  />
                 </div>
                 <p id="reset-password-text">
                   Please enter the OTP sent to your email address. If you don't
@@ -44,8 +54,24 @@ const PasswordResetPage = () => {
                 <div
                   className="next-btn"
                   onClick={() => {
-                    setIsOtpValidated(true);
-                    setIsEmailSent(false);
+                    dispatch(
+                      loadingActions.setLoading({
+                        isLoading: true,
+                        message: "Verifying OTP",
+                      })
+                    );
+                    verifyOtp(username, otp).then(() => {
+                      // setToken(res);
+                      setIsOtpValidated(true);
+                      setIsEmailSent(false);
+                    });
+
+                    dispatch(
+                      loadingActions.setLoading({
+                        isLoading: false,
+                        message: "",
+                      })
+                    );
                   }}
                 >
                   <p>
@@ -60,7 +86,7 @@ const PasswordResetPage = () => {
                 <div className="email-input">
                   <input
                     type="text"
-                    placeholder="Email"
+                    placeholder="username"
                     onChange={(e) => {
                       setUsername(e.target.value);
                     }}
@@ -72,22 +98,28 @@ const PasswordResetPage = () => {
                   you registered with, check your spam folder or request another
                   email.
                 </p>
+                {/* <button>Next</button> */}
                 <div
                   className="next-btn"
-                  onClick={async () => {
+                  onClick={() => {
+                    if (username === "") {
+                      alert("Please enter username");
+                      return;
+                    }
                     dispatch(
                       loadingActions.setLoading({
                         isLoading: true,
                         message: "Sending OTP",
                       })
                     );
-                    await sendOtp(username).then((res) => {
+                    sendOtp(username).then((res) => {
                       dispatch(
                         loadingActions.setLoading({
                           isLoading: false,
                           message: "",
                         })
                       );
+
                       setIsEmailSent(true);
                       console.log(res);
                     });
@@ -103,16 +135,34 @@ const PasswordResetPage = () => {
               <>
                 <h2>Reset Password</h2>
                 <div className="password-input">
-                  <input type="password" placeholder="Password" />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
                 </div>
                 <div className="password-input">
-                  <input type="password" placeholder="Confirm Password" />
+                  <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    onChange={(e) => {
+                      setReCheckPassword(e.target.value);
+                    }}
+                  />
                 </div>
                 <div
                   className="reset-password-btn"
                   onClick={() => {
-                    setIsPasswordReset(true);
-                    setIsOtpValidated(false);
+                    if (password !== reCheckPassword) {
+                      alert("Passwords do not match");
+                      return;
+                    }
+                    resetPassword(username, password).then(() => {
+                      setIsPasswordReset(true);
+                      setIsOtpValidated(false);
+                    });
                   }}
                 >
                   <p>

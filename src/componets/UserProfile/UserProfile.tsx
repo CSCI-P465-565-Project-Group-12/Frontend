@@ -3,7 +3,6 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import "./UserProfile.css";
 import { useEffect, useState } from "react";
 import useApi from "../../hooks/apiHook";
-
 const dummyCardDetails = {
   number: "5011 0544 8859 7827",
   expiry: "12/24",
@@ -40,12 +39,11 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
     phone: false,
     address: false,
   });
+
   const [isCardEditing, setIsCardEditing] = useState(false);
   const { fetchProfile, createProfile, updateProfile } = useApi();
   // console.log(isUserEditing);
   const onSaveDetails = async () => {
-    console.log("just before udpdating", user);
-
     const updatedProfile = await updateProfile({
       first_name: user.name.split(" ")[0],
       last_name: user.name.split(" ")[1] || "",

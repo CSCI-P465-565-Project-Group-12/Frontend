@@ -5,7 +5,7 @@ import "./BookedEvents.css";
 import { useEffect, useState } from "react";
 import { IVenue } from "../../IVenue";
 import useApi from "../../hooks/apiHook";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IBookedEvent, setBookedEvent } from "../../store/booked-event-store";
 import LoadingModal from "../UI/Modal/LoadingModal";
 import { loadingActions } from "../../store/loading-store";
@@ -13,6 +13,9 @@ import { loadingActions } from "../../store/loading-store";
 const BookedEvents = () => {
   const [venues, setVenues] = useState<IVenue[]>([]);
   const [bookedEvents, setBookedEvents] = useState<any[]>([]);
+  const normalUser = useSelector((state: any) => state.normalUser);
+  // console.log("normalUser", normalUser);
+
   const { getAllVenues, retrieveAllReservations } = useApi();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,27 +27,33 @@ const BookedEvents = () => {
     console.log(venues);
   }, []);
   useEffect(() => {
-    retrieveAllReservations().then((res) => {
+    retrieveAllReservations().then((res: any) => {
       dispatch(loadingActions.setLoading({ isLoading: false, message: "" }));
+      console.log("res", res);
+
       setBookedEvents(res);
       let data: IBookedEvent[] = [];
 
-      res.forEach((event: any) => {
-        let identifiedVenue = venues.find(
-          (venue: any) => venue.id === event.venueId
-        );
-        console.log(identifiedVenue);
+      res
+        .filter((event: any) => {
+          return event.userId === normalUser.id;
+        })
+        .map((event: any) => {
+          let identifiedVenue = venues.find(
+            (venue: any) => venue.id === event.venueId
+          );
+          console.log(identifiedVenue);
 
-        data.push({
-          eventId: event.id,
-          eventName: event.name,
-          eventDate: event.startTime,
-          eventTime: event.startTime,
-          coverImg: event.coverImg,
-          eventLocation: `${identifiedVenue?.street}, ${identifiedVenue?.city}, ${identifiedVenue?.state}, ${identifiedVenue?.zipcode}`,
-          venueName: identifiedVenue?.name,
+          data.push({
+            eventId: event.id,
+            eventName: event.activity.name,
+            eventDate: event.activity.startTime,
+            eventTime: event.activity.startTime,
+            coverImg: event.activity.coverImg,
+            eventLocation: `${identifiedVenue?.street}, ${identifiedVenue?.city}, ${identifiedVenue?.state}, ${identifiedVenue?.zipcode}`,
+            venueName: identifiedVenue?.name,
+          });
         });
-      });
       dispatch(setBookedEvent(data));
     });
   }, [venues.length > 0]);
@@ -55,35 +64,42 @@ const BookedEvents = () => {
       <div className="booked-events-container">
         <h2>Your Booked Events</h2>
         <div className="booked-events">
-          {bookedEvents.map((event, index) => (
-            <div key={index} className="booked-event">
-              <div className="event-image">
-                <img src={event.coverImg} alt={event.name} />
+          {bookedEvents
+            .filter((event: any) => {
+              return event.userId === normalUser.id;
+            })
+            .map((event, index) => (
+              <div key={index} className="booked-event">
+                <div className="event-image">
+                  <img
+                    src={event.activity.coverImg}
+                    alt={event.activity.name}
+                  />
+                </div>
+                <div className="event-key-details">
+                  <h3>{event.activity.name}</h3>
+                  <p>
+                    {
+                      venues.find((venue: any) => venue.id === event.venueId)
+                        ?.name
+                    }
+                  </p>
+                  <p>{event.activity.startTime}</p>
+                </div>
+                <div className="manage-event">
+                  <button>
+                    <Link
+                      to={{
+                        pathname: "/manage-event",
+                      }}
+                      state={{ bookedEventId: event.id, userId: event.userId }}
+                    >
+                      Manage Event
+                    </Link>
+                  </button>
+                </div>
               </div>
-              <div className="event-key-details">
-                <h3>{event.name}</h3>
-                <p>
-                  {
-                    venues.find((venue: any) => venue.id === event.venueId)
-                      ?.name
-                  }
-                </p>
-                <p>{event.startTime}</p>
-              </div>
-              <div className="manage-event">
-                <button>
-                  <Link
-                    to={{
-                      pathname: "/manage-event",
-                    }}
-                    state={{ bookedEventId: event.id, userId: event.userId }}
-                  >
-                    Manage Event
-                  </Link>
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
       <LoadingModal message="Loading your booked events." />

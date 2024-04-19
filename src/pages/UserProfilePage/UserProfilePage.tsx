@@ -13,6 +13,7 @@ import BookedEvents from "../../componets/BookedEvents/BookedEvents";
 import useApi from "../../hooks/apiHook";
 import { IBookedEvent, setBookedEvent } from "../../store/booked-event-store";
 import { IVenue } from "../../IVenue";
+// import { normalUserActions } from "../../store/normal-user-store";
 
 interface INormalUser {
   id: string;
@@ -70,6 +71,8 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
     const checkForProfile = async () => {
       const profile: any = await fetchProfile().then((res) => {
+        // dispatch(normalUserActions.setUser(res.data));
+
         return res;
       });
       console.log(profile);

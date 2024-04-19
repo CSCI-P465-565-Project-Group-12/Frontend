@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import successImg from "../../assets/Successful purchase-pana.png";
 import Footer from "../../componets/UI/Footer/Footer";
 import Navbar from "../../componets/UI/Navbar/Navbar";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { resetRecentlyBookedEvent } from "../../store/booked-event-store";
 import useApi from "../../hooks/apiHook";
 import { useEffect } from "react";
@@ -10,10 +10,10 @@ import { useEffect } from "react";
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const bookedEvent = useSelector(
-    (state: any) => state.bookedEvent.recentlyBookedEvent
-  );
-  console.log(bookedEvent);
+  // const bookedEvent = useSelector(
+  //   (state: any) => state.bookedEvent.recentlyBookedEvent
+  // );
+  // console.log(bookedEvent);
   const { changeReservationStatus, changePaymentStatus } = useApi();
   useEffect(() => {
     changeReservationStatus("confirmed");
@@ -44,10 +44,10 @@ const PaymentSuccessPage = () => {
             maxHeight: "600px",
           }}
         />
-        <h2>
+        {/* <h2>
           You have successfully booked {bookedEvent.eventName} on{" "}
           {bookedEvent.eventDate} at {bookedEvent.eventTime}
-        </h2>
+        </h2> */}
         <h2>Thank you for booking with us!</h2>
         <h2>Enjoy your event!</h2>
         <div

@@ -141,6 +141,8 @@ const useApi = () => {
         // console.log(useSelector((state: any) => state.login));
 
         dispatch(normalUserActions.setUser(res.data.jwtUserObj));
+        console.log("normalUser", res.data.jwtUserObj);
+
         dispatch(loadingActions.setLoading({ isLoading: false, message: "" }));
         navigate("/user", { state: { loginType: "normal" } });
       })
@@ -172,9 +174,12 @@ const useApi = () => {
 
   const sendOtp = async (username: string) => {
     await axios
-      .post(baseApi + "sendotp", username, {
+      .get(baseApi + "sendotp", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: {
+          username: username,
         },
       })
       .then((res) => {
@@ -186,6 +191,50 @@ const useApi = () => {
       });
   };
 
+  const verifyOtp = async (username: string, otp: string) => {
+    await axios
+      .get(baseApi + "verifyotp", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: {
+          username: username,
+          otp: otp,
+        },
+      })
+      .then((res) => {
+        console.log("r", res.data);
+        localStorage.setItem("token", res.data);
+      })
+      .catch((err) => {
+        alert("Invalid OTP. Please try again.");
+        navigate("/password-reset");
+        console.log(err.response.data);
+      });
+  };
+
+  const resetPassword = async (username: string, password: string) => {
+    await axios
+      .post(
+        baseApi + "resetpassword",
+        { username: username, password: password },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        localStorage.removeItem("token");
+        alert("Password reset successfully.");
+        // navigate("/login");
+      })
+      .catch((err) => {
+        alert("An error occurred while resetting the password.");
+        console.log(err.response.data);
+      });
+  };
   // reservations api
   const createReservation = async (data: any) => {
     const response = await axios.post(vabApi + "reservation", data, {
@@ -241,6 +290,8 @@ const useApi = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+    // console.log(response.data);
+
     return response.data;
   };
   return {
@@ -255,6 +306,8 @@ const useApi = () => {
     getAllVenues,
     getAllEvents,
     sendOtp,
+    verifyOtp,
+    resetPassword,
     createReservation,
     changeReservationStatus,
     changePaymentStatus,
