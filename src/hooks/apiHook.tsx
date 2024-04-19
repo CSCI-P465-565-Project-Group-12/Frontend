@@ -260,7 +260,7 @@ const useApi = () => {
       }
     );
     if (response.status === 200) {
-      alert("Activity status updated successfully.");
+      console.log("Activity status updated successfully.");
     }
     localStorage.removeItem("activityId");
     return response.data;
@@ -278,7 +278,7 @@ const useApi = () => {
       }
     );
     if (response.status === 200) {
-      alert("Payment status updated successfully.");
+      console.log("Payment status updated successfully.");
     }
     localStorage.removeItem("reservationId");
     return response.data;

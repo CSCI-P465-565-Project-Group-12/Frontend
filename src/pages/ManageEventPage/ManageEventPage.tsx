@@ -6,6 +6,7 @@ import "./ManageEventPage.css";
 import Chat from "../../componets/Chat/Chat";
 import { useSelector } from "react-redux";
 import useApi from "../../hooks/apiHook";
+import GroupChat from "../../componets/Chat/GroupChat";
 
 const ManageEventPage: React.FC = () => {
   const navigate = useNavigate();
@@ -103,10 +104,13 @@ const ManageEventPage: React.FC = () => {
           {googleUser && user === null ? (
             <h2>Please Login to chat </h2>
           ) : (
-            <Chat
-              sender={user.username}
-              event={`${bookedEvent.eventName}-${userId}`}
-            />
+            <>
+              <Chat
+                sender={user.username}
+                event={`${bookedEvent.eventName}-${userId}`}
+              />
+              <GroupChat sender={user.username} event={bookedEvent.eventName} />
+            </>
           )}
         </div>
       </div>
