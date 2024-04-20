@@ -159,6 +159,7 @@ const useApi = () => {
       },
     });
     // console.log(response.data);
+    console.log(response);
 
     return response.data;
   };

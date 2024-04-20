@@ -78,6 +78,8 @@ const EventsNearMePage = () => {
     getAllEvents().then((res) => {
       setEvents(res);
     });
+    console.log("events", events, "venues", venues);
+
     events.map((event) => {
       setLocations((prev) => [
         ...prev,
@@ -135,6 +137,8 @@ const EventsNearMePage = () => {
       events.forEach((event) => {
         const venue = venues.find((venue) => venue.id === event.venueId);
         const eventLocation = `${venue.street}, ${venue.city}, ${venue.state}`;
+        // if any of the venue.street, venue.city, venue.state is undefined, skip this iteration
+        if (!venue.street || !venue.city || !venue.state) return;
         const distance = calculateDistance(
           coord.lat,
           coord.lng,
