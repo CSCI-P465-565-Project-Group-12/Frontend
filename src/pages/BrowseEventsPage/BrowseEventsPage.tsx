@@ -116,9 +116,12 @@ const BrowseEventsPage = () => {
     }
     if (currentFilters.categoryFilters.length > 0) {
       setFilteredEvents(
-        events.filter((event: any) =>
-          currentFilters.categoryFilters.includes(event.venueType)
-        )
+        events.filter((event: any) => {
+          let venueName = venues.find(
+            (venue: any) => venue.id === event.venueId
+          )?.name;
+          return currentFilters.categoryFilters.includes(venueName);
+        })
       );
     }
     if (currentFilters.locationFilters.length > 0) {
@@ -155,13 +158,15 @@ const BrowseEventsPage = () => {
     .map((venue: any) => venue.city)
     .filter((value, index, self) => self.indexOf(value) === index);
 
+  const venueNames = venues.map((venue: any) => venue.name);
+
   const dates = events.map((event: any) => event.startTime.split("T")[0]);
   return (
     <>
       <Navbar />
       <div className="browse-events-page-container">
         <div className="filter-box-container">
-          <FilterBox location={cities} date={dates} />
+          <FilterBox location={cities} date={dates} venues={venueNames} />
         </div>
         <div className="all-events-container">
           {events.length > 0 ? (

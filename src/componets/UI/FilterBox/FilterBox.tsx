@@ -10,21 +10,14 @@ interface IFilterList {
 interface IFilterBoxProps {
   location?: string[];
   date?: string[];
+  venues?: any[];
 }
 
 const FilterBox: React.FC<IFilterBoxProps> = (props) => {
   const filters: IFilterList[] = [
     {
-      filterHeading: "Category",
-      options: [
-        "Sports",
-        "Music",
-        "Art",
-        "Food",
-        "Tech",
-        "Business",
-        "Education",
-      ],
+      filterHeading: "Venues",
+      options: props.venues ? props.venues : [],
     },
     {
       filterHeading: "Date",

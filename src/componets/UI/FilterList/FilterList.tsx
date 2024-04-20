@@ -16,7 +16,7 @@ const FilterList: React.FC<IFilterListProps> = (props) => {
     heading: string
   ) => {
     switch (heading) {
-      case "Category":
+      case "Venues":
         if (event.target.checked) {
           dispatch(filterActions.setCategoryFilters(event.target.value));
         } else {
