@@ -11,10 +11,11 @@ import persistStore from "redux-persist/es/persistStore";
 import bookedEventSlice from "./booked-event-store";
 
 import sessionStorage from "redux-persist/lib/storage/session";
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
     key: 'userProfile',
-    storage:sessionStorage,
+    storage:storage,
 }
 const persistConfigForLogin = {
     key: 'login',

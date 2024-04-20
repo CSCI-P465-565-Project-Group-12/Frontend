@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EventGridCard from "../../componets/UI/EventGridCard/EventGridCard";
 import FilterBox from "../../componets/UI/FilterBox/FilterBox";
 import Navbar from "../../componets/UI/Navbar/Navbar";
@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Footer from "../../componets/UI/Footer/Footer";
 import useApi from "../../hooks/apiHook";
 import { IVenue } from "../../IVenue";
+import LoadingModal from "../../componets/UI/Modal/LoadingModal";
+import { loadingActions } from "../../store/loading-store";
 
 // import { events } from "../../dummyData";
 // let events = [
@@ -69,7 +71,14 @@ const BrowseEventsPage = () => {
   const currentFilters = useSelector((state: any) => state.filter);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { getAllEvents, getAllVenues } = useApi();
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(
+      loadingActions.setLoading({
+        isLoading: true,
+        message: "",
+      })
+    );
     getAllEvents().then((res) => {
       setEvents(res);
       setFilteredEvents(res);
@@ -79,6 +88,15 @@ const BrowseEventsPage = () => {
     });
   }, []);
   // console.log("events", events, "venues", venues);
+  useEffect(() => {
+    if (events.length > 0 && venues.length > 0)
+      dispatch(
+        loadingActions.setLoading({
+          isLoading: false,
+          message: "",
+        })
+      );
+  }, [events, venues]);
 
   useEffect(() => {
     if (
@@ -114,20 +132,30 @@ const BrowseEventsPage = () => {
     }
     if (currentFilters.dateFilters.length > 0) {
       setFilteredEvents(
-        events.filter((event: any) =>
-          currentFilters.dateFilters.includes(event.startTime.split("T")[0])
-        )
+        events.filter((event: any) => {
+          console.log("event", event.startTime.split("T")[0]);
+
+          return currentFilters.dateFilters.includes(
+            event.startTime.split("T")[0]
+          );
+        })
       );
     }
   }, [currentFilters]);
   // console.log("filteredEvents", filteredEvents);
+  // retrieve cities from venues and store in an array string[] and remove duplicates
 
+  const cities = venues
+    .map((venue: any) => venue.city)
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  const dates = events.map((event: any) => event.startTime.split("T")[0]);
   return (
     <>
       <Navbar />
       <div className="browse-events-page-container">
         <div className="filter-box-container">
-          <FilterBox />
+          <FilterBox location={cities} date={dates} />
         </div>
         <div className="all-events-container">
           {events.length > 0 ? (
@@ -156,6 +184,7 @@ const BrowseEventsPage = () => {
         </div>
       </div>
       <Footer />
+      <LoadingModal message="Loading Events..." />
     </>
   );
 };

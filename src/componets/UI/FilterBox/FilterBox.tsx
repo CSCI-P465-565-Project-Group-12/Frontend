@@ -7,30 +7,41 @@ interface IFilterList {
   filterHeading: string;
   options: string[];
 }
-const filters: IFilterList[] = [
-  {
-    filterHeading: "Category",
-    options: [
-      "Sports",
-      "Music",
-      "Art",
-      "Food",
-      "Tech",
-      "Business",
-      "Education",
-    ],
-  },
-  {
-    filterHeading: "Date",
-    options: ["Today", "This Week", "This Month", "This Year"],
-  },
-  {
-    filterHeading: "Location",
-    options: ["Bloomington", "Indianapolis", "Chicago", "Columbus"],
-  },
-];
+interface IFilterBoxProps {
+  location?: string[];
+  date?: string[];
+}
 
-const FilterBox: React.FC = () => {
+const FilterBox: React.FC<IFilterBoxProps> = (props) => {
+  const filters: IFilterList[] = [
+    {
+      filterHeading: "Category",
+      options: [
+        "Sports",
+        "Music",
+        "Art",
+        "Food",
+        "Tech",
+        "Business",
+        "Education",
+      ],
+    },
+    {
+      filterHeading: "Date",
+      options: props.date
+        ? props.date.map((d) => {
+            return new Date(d).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "long",
+            });
+          })
+        : [],
+    },
+    {
+      filterHeading: "Location",
+      options: props.location ? props.location : [],
+    },
+  ];
   const dispatch = useDispatch();
   const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "") {

@@ -7,13 +7,20 @@ import Chat from "../../componets/Chat/Chat";
 import { useSelector } from "react-redux";
 import useApi from "../../hooks/apiHook";
 import GroupChat from "../../componets/Chat/GroupChat";
+import { useState } from "react";
 
 const ManageEventPage: React.FC = () => {
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const [toMail, setToMail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   const user = useSelector((state: any) => state.normalUser);
 
   const googleUser = useSelector((state: any) => state.googleUser);
+  const normalUser = useSelector((state: any) => state.normalUser);
+  console.log("normalUser", normalUser);
+
   const allBookedEvents = useSelector(
     (state: any) => state.bookedEvents.bookedEvents
   );
@@ -26,7 +33,7 @@ const ManageEventPage: React.FC = () => {
     (event: any) => event.eventId === bookedEventId
   );
   console.log(bookedEvent);
-  const { changeReservationStatus } = useApi();
+  const { changeReservationStatus, inviteFriends } = useApi();
 
   const onCancelEvent = () => {
     const confirmCancel = window.confirm(
@@ -37,7 +44,6 @@ const ManageEventPage: React.FC = () => {
       navigate("/");
     }
   };
-  console.log(`${bookedEvent.eventName}-${userId}`);
 
   return (
     <>
@@ -82,14 +88,67 @@ const ManageEventPage: React.FC = () => {
               <i className="bi bi-trash" />
               <h2>Cancel Event</h2>
             </div>
-            <div className="share-event-option">
+            <div
+              className="share-event-option"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setExpanded(true);
+              }}
+            >
               <i className="bi bi-share" />
               <h2>Share Event</h2>
             </div>
-            <div className="resend-confirmation-option">
+            {expanded && (
+              <div className="share-event-inputs">
+                {loading ? (
+                  <p>Sending invite...</p>
+                ) : (
+                  <>
+                    <input
+                      type="email"
+                      placeholder="Enter email"
+                      style={{
+                        width: "80%",
+                        padding: "0.5rem",
+                        marginBottom: "1rem",
+                      }}
+                      onChange={(e) => {
+                        setToMail(e.target.value);
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        setLoading(true);
+                        inviteFriends(toMail, normalUser.username).then(() => {
+                          setLoading(false);
+                          setExpanded(false);
+                        });
+                      }}
+                    >
+                      Send Invite
+                    </button>
+                  </>
+                )}
+
+                <i
+                  className="bi bi-x"
+                  onClick={() => {
+                    setExpanded(false);
+                  }}
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                  }}
+                />
+              </div>
+            )}
+
+            {/* <div className="resend-confirmation-option">
               <i className="bi bi-envelope" />
               <h2>Resend Confirmation</h2>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="chat-section">

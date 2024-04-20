@@ -8,6 +8,7 @@ import { loadingActions } from "../store/loading-store";
 const useApi = () => {
   const baseApi = import.meta.env.VITE_BASE_API as string;
   const vabApi = import.meta.env.VITE_BASE_VAB_API as string;
+  const mailApi = import.meta.env.VITE_MAIL_API as string;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const register = async (data: any) => {
@@ -294,6 +295,28 @@ const useApi = () => {
 
     return response.data;
   };
+
+  //invite api
+  const inviteFriends = async (to: string, sender: string) => {
+    if (to === "") {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    const response = await axios.post(
+      mailApi + "send-mail",
+      {
+        to: to,
+        subject: "Invitation to join Venue App Booking",
+        text: `You have been invited to join Venue App Booking by @${sender}. Click on the link to join: https://bash-boss-client.vercel.app/`,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  };
   return {
     register,
     getUser,
@@ -312,6 +335,7 @@ const useApi = () => {
     changeReservationStatus,
     changePaymentStatus,
     retrieveAllReservations,
+    inviteFriends,
   };
 };
 

@@ -40,6 +40,9 @@ body {
   color: #caf0f8;
 }
 
+::-webkit-scrollbar {
+  background-color: transparent;
+}
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

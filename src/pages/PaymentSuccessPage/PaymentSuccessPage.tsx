@@ -1,28 +1,33 @@
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import successImg from "../../assets/Successful purchase-pana.png";
 import Footer from "../../componets/UI/Footer/Footer";
-import Navbar from "../../componets/UI/Navbar/Navbar";
+// import Navbar from "../../componets/UI/Navbar/Navbar";
 import { useDispatch } from "react-redux";
 import { resetRecentlyBookedEvent } from "../../store/booked-event-store";
 import useApi from "../../hooks/apiHook";
 import { useEffect } from "react";
 
 const PaymentSuccessPage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   // const bookedEvent = useSelector(
   //   (state: any) => state.bookedEvent.recentlyBookedEvent
   // );
   // console.log(bookedEvent);
-  const { changeReservationStatus, changePaymentStatus } = useApi();
+  const {
+    changeReservationStatus,
+    changePaymentStatus,
+    validateUserTokenForNormalUser,
+  } = useApi();
   useEffect(() => {
     changeReservationStatus("confirmed");
     changePaymentStatus();
     dispatch(resetRecentlyBookedEvent());
   }, []);
+
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div
         style={{
           display: "flex",
@@ -59,18 +64,24 @@ const PaymentSuccessPage = () => {
             gap: "20px",
           }}
         >
-          <button
+          {/* <button
             style={{ marginTop: "20px" }}
             onClick={() => {
+              validateUserTokenForNormalUser(
+                localStorage.getItem("token") as string
+              );
+
               navigate("/");
             }}
           >
             Go back to Home
-          </button>
+          </button> */}
           <button
             style={{ marginTop: "20px" }}
             onClick={() => {
-              navigate("/user");
+              validateUserTokenForNormalUser(
+                localStorage.getItem("token") as string
+              );
             }}
           >
             Go to Profile

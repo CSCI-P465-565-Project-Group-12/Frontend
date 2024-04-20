@@ -29,6 +29,7 @@
   overflow-y: scroll;
   border-bottom: 1px solid #161b3343;
 }
+
 .filter-list-option {
   display: flex;
   justify-content: center;

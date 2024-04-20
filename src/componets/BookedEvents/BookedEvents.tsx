@@ -43,11 +43,21 @@ const BookedEvents = () => {
             (venue: any) => venue.id === event.venueId
           );
           console.log(identifiedVenue);
-
+          let date = new Date(event.activity.startTime).toLocaleDateString(
+            "en-US",
+            {
+              day: "numeric",
+              weekday: "long",
+              month: "long",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+            }
+          );
           data.push({
             eventId: event.id,
             eventName: event.activity.name,
-            eventDate: event.activity.startTime,
+            eventDate: date,
             eventTime: event.activity.startTime,
             coverImg: event.activity.coverImg,
             eventLocation: `${identifiedVenue?.street}, ${identifiedVenue?.city}, ${identifiedVenue?.state}, ${identifiedVenue?.zipcode}`,
@@ -68,38 +78,50 @@ const BookedEvents = () => {
             .filter((event: any) => {
               return event.userId === normalUser.id;
             })
-            .map((event, index) => (
-              <div key={index} className="booked-event">
-                <div className="event-image">
-                  <img
-                    src={event.activity.coverImg}
-                    alt={event.activity.name}
-                  />
+            .map((event, index) => {
+              let date = new Date(event.activity.startTime).toLocaleDateString(
+                "en-US",
+                {
+                  day: "numeric",
+                  month: "long",
+                }
+              );
+              return (
+                <div key={index} className="booked-event">
+                  <div className="event-image">
+                    <img
+                      src={event.activity.coverImg}
+                      alt={event.activity.name}
+                    />
+                  </div>
+                  <div className="event-key-details">
+                    <h3>{event.activity.name}</h3>
+                    <p>
+                      {
+                        venues.find((venue: any) => venue.id === event.venueId)
+                          ?.name
+                      }
+                    </p>
+                    <p>{date}</p>
+                  </div>
+                  <div className="manage-event">
+                    <button>
+                      <Link
+                        to={{
+                          pathname: "/manage-event",
+                        }}
+                        state={{
+                          bookedEventId: event.id,
+                          userId: event.userId,
+                        }}
+                      >
+                        Manage Event
+                      </Link>
+                    </button>
+                  </div>
                 </div>
-                <div className="event-key-details">
-                  <h3>{event.activity.name}</h3>
-                  <p>
-                    {
-                      venues.find((venue: any) => venue.id === event.venueId)
-                        ?.name
-                    }
-                  </p>
-                  <p>{event.activity.startTime}</p>
-                </div>
-                <div className="manage-event">
-                  <button>
-                    <Link
-                      to={{
-                        pathname: "/manage-event",
-                      }}
-                      state={{ bookedEventId: event.id, userId: event.userId }}
-                    >
-                      Manage Event
-                    </Link>
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
       </div>
       <LoadingModal message="Loading your booked events." />

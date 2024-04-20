@@ -25,7 +25,7 @@ const EventPage: React.FC = () => {
   const checkIfBooked = bookedEvents.find(
     (event: any) => event.eventId === identifiedEvent.id
   );
-  // console.log(checkIfBooked, bookedEvents);
+  console.log(checkIfBooked, bookedEvents);
 
   const details = JSON.parse(identifiedVenue.details);
   const { createReservation } = useApi();
@@ -80,7 +80,7 @@ const EventPage: React.FC = () => {
       date: "2021-10-20",
     },
   ];
-
+  console.log(typeof identifiedEvent.cost);
   const redirectToCheckout = (e: any) => {
     e.preventDefault();
     dispatch(
@@ -101,9 +101,10 @@ const EventPage: React.FC = () => {
         alert("Booking Successful");
       }
     });
+
     if (identifiedEvent.cost === "0.00") {
       alert("Booking Successful");
-      navigate("/payment-success");
+      return navigate("/payment-success");
     }
     navigate("/checkout", {
       state: {
