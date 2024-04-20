@@ -136,7 +136,13 @@ const BrowseEventsPage = () => {
           console.log("event", event.startTime.split("T")[0]);
 
           return currentFilters.dateFilters.includes(
-            event.startTime.split("T")[0]
+            new Date(event.startTime.split("T")[0]).toLocaleDateString(
+              "en-US",
+              {
+                day: "numeric",
+                month: "long",
+              }
+            )
           );
         })
       );
