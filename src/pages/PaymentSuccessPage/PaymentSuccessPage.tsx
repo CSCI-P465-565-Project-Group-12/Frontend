@@ -20,7 +20,7 @@ const PaymentSuccessPage = () => {
     validateUserTokenForNormalUser,
   } = useApi();
   useEffect(() => {
-    changeReservationStatus("confirmed");
+    changeReservationStatus("Confirmed");
     changePaymentStatus();
     dispatch(resetRecentlyBookedEvent());
   }, []);
