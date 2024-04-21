@@ -15,55 +15,106 @@ const useApi = () => {
     await axios
       .post(baseApi + "signup", data)
       .then((res) => {
+        console.log(res);
+
+        if (res.status === 500) {
+          alert("Sorry, something went wrong. Please try again.");
+          dispatch(
+            loadingActions.setLoading({
+              isLoading: false,
+              message: "",
+            })
+          );
+          return;
+        }
         dispatch(
           loadingActions.setLoading({
             isLoading: false,
             message: "",
           })
         );
-        const duoAuthUrl = res.data.url;
-        window.location.href = duoAuthUrl;
+        if (res.data === undefined) {
+          alert("Something went wrong. Please try again.");
+          navigate("/login");
+        }
+        // const duoAuthUrl = res.data.url;
+        // window.location.href = duoAuthUrl;
       })
       .catch((err) => {
+        if (err.status === 500) {
+          console.log(err);
+
+          alert("Sorry, something went wrong. Please try again.");
+          dispatch(
+            loadingActions.setLoading({
+              isLoading: false,
+              message: "",
+            })
+          );
+          return;
+        }
         dispatch(
           loadingActions.setLoading({
             isLoading: false,
             message: "",
           })
         );
+        if (err.response.data === undefined) {
+          alert("Something went wrong. Please try again.");
+          navigate("/login");
+        }
         console.log(err.response.data);
         const duoAuthUrl = err.response.data.url;
         window.location.href = duoAuthUrl;
       });
   };
   const login = async (data: any) => {
-    console.log(data);
+    // console.log(data);
 
     await axios
       .post(baseApi + "signin", data)
       .then((res) => {
+        console.log(res);
+
+        if (res.status === 401) {
+          alert("Sorry, something went wrong. Please try again.");
+          dispatch(
+            loadingActions.setLoading({
+              isLoading: false,
+              message: "",
+            })
+          );
+        }
         dispatch(
           loadingActions.setLoading({
             isLoading: false,
             message: "",
           })
         );
-        console.log(res.data);
+        // console.log(res.data);
         const duoAuthUrl = res.data.url;
         window.location.href = duoAuthUrl;
       })
       .catch((err) => {
-        dispatch(
-          loadingActions.setLoading({
-            isLoading: false,
-            message: "",
-          })
-        );
-        // alert("Something went wrong. Please try again.");
-        // console.log(err);
-        // alert("Invalid username or password.");
-        const duoAuthUrl = err.response.data.url;
-        window.location.href = duoAuthUrl;
+        // console.log(err.status);
+        if (err.response.status === 302) {
+          dispatch(
+            loadingActions.setLoading({
+              isLoading: false,
+              message: "",
+            })
+          );
+          const duoAuthUrl = err.response.data.url;
+          window.location.href = duoAuthUrl;
+        } else if (err.response.status === 401) {
+          alert("Wrong username or password. Please try again.");
+          dispatch(
+            loadingActions.setLoading({
+              isLoading: false,
+              message: "",
+            })
+          );
+        }
       });
   };
   const getUser = async (userId: string) => {
