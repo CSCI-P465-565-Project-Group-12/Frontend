@@ -14,10 +14,13 @@ import { IVenue } from "../../IVenue";
 import useApi from "../../hooks/apiHook";
 import { setRecentlyBookedEvent } from "../../store/booked-event-store";
 
+interface IEventN extends IEvent {
+  description?: string;
+}
 const EventPage: React.FC = () => {
   const [overallRating, setOverallRating] = useState<number>(0);
   // const { venueId } = useParams();
-  const identifiedEvent = useLocation().state.event as IEvent;
+  const identifiedEvent = useLocation().state.event as IEventN;
   const identifiedVenue = useLocation().state.venue as IVenue;
   const bookedEvents = useSelector(
     (state: any) => state.bookedEvents.bookedEvents
@@ -39,7 +42,8 @@ const EventPage: React.FC = () => {
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear().toString();
   const navigate = useNavigate();
-  const googleUserName = useSelector((state: any) => state.googleUser.name);
+  // const googleUserName = useSelector((state: any) => state.googleUser.name);
+  const normalUser = useSelector((state: any) => state.normalUser);
   const dispatch = useDispatch();
   // console.log(identifiedEvent);
   // make dummy reviews
@@ -114,7 +118,7 @@ const EventPage: React.FC = () => {
           eventLocation: `${identifiedVenue.street}, ${identifiedVenue.city}, ${identifiedVenue.state}, ${identifiedVenue.zipcode}`,
           eventTime: `${day} ${month} ${year}`,
           eventDate: `${day} ${month} ${year}`,
-          userName: googleUserName,
+          userName: normalUser?.username || "",
         },
       },
     });
@@ -158,7 +162,7 @@ const EventPage: React.FC = () => {
             <div className="event-category">
               <p>{identifiedVenue.venueType}</p>
             </div>
-            <p>{details?.description}</p>
+            <p>{identifiedEvent?.description}</p>
             <div className="event-notes">
               <h3>Venue Notes</h3>
               <ul>

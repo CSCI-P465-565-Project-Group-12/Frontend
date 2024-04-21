@@ -78,6 +78,9 @@ const BookedEvents = () => {
             .filter((event: any) => {
               return event.userId === normalUser.id;
             })
+            .filter((event: any) => {
+              return event.status === "confirmed";
+            })
             .map((event, index) => {
               let date = new Date(event.activity.startTime).toLocaleDateString(
                 "en-US",

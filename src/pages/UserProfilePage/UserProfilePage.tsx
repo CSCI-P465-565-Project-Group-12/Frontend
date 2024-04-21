@@ -11,8 +11,15 @@ import { loadingActions } from "../../store/loading-store";
 import { googleUserActions } from "../../store/google-user-store";
 import BookedEvents from "../../componets/BookedEvents/BookedEvents";
 import useApi from "../../hooks/apiHook";
-import { IBookedEvent, setBookedEvent } from "../../store/booked-event-store";
+import {
+  IBookedEvent,
+  resetBookedEvent,
+  resetRecentlyBookedEvent,
+  setBookedEvent,
+} from "../../store/booked-event-store";
 import { IVenue } from "../../IVenue";
+import { loginActions } from "../../store/login-store";
+import { normalUserActions } from "../../store/normal-user-store";
 // import { normalUserActions } from "../../store/normal-user-store";
 
 interface INormalUser {
@@ -32,6 +39,19 @@ const UserProfilePage: React.FC = () => {
   const [venues, setVenues] = useState<IVenue[]>([]);
   const { getAllVenues, retrieveAllReservations } = useApi();
   const dispatch = useDispatch();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      alert("Session expired, please login again");
+      dispatch(loginActions.logout());
+      dispatch(normalUserActions.resetUser());
+      dispatch(googleUserActions.resetGoogleUser());
+      dispatch(resetBookedEvent());
+      dispatch(resetRecentlyBookedEvent());
+      localStorage.removeItem("token");
+      window.location.href = import.meta.env.VITE_MAIN_CLIENT as string;
+    }, 3600000);
+    return () => clearTimeout(timer);
+  }, []);
   useEffect(() => {
     getAllVenues().then(async (res) => {
       const response = await res;
