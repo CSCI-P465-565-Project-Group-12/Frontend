@@ -63,7 +63,10 @@ const HomePage = () => {
         }}
       >
         <i className="bi bi-gear-fill" />
-        <p>We are working on a technical issue, Thank you for your patience.</p>
+        <p>
+          We are working on a technical issue with this section, Thank you for
+          your patience.
+        </p>
       </div>
       <Footer />
       <LoadingModal message="Loading Events.." />
