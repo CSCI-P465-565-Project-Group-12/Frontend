@@ -117,6 +117,9 @@ const BookedEvents = () => {
                           bookedEventId: event.id,
                           userId: event.userId,
                         }}
+                        onClick={() => {
+                          localStorage.setItem("reservationId", event.id);
+                        }}
                       >
                         Manage Event
                       </Link>

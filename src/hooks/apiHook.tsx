@@ -280,6 +280,7 @@ const useApi = () => {
         console.log(err.response.data);
       });
   };
+
   // reservations api
   const createReservation = async (data: any) => {
     const response = await axios.post(vabApi + "reservation", data, {
@@ -307,7 +308,7 @@ const useApi = () => {
     if (response.status === 200) {
       console.log("Activity status updated successfully.");
     }
-    localStorage.removeItem("activityId");
+    localStorage.removeItem("reservationId");
     return response.data;
   };
   const changePaymentStatus = async () => {
@@ -379,6 +380,7 @@ const useApi = () => {
     changeReservationStatus,
     changePaymentStatus,
     retrieveAllReservations,
+
     inviteFriends,
   };
 };

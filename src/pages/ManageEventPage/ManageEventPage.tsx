@@ -28,7 +28,10 @@ const ManageEventPage: React.FC = () => {
   // console.log(allBookedEvents);
   const userId = location.state.userId;
   console.log("userId", userId);
-
+  // if the user presses back remove the reservationId from the local storage
+  window.onpopstate = () => {
+    localStorage.removeItem("reservationId");
+  };
   const bookedEvent = allBookedEvents.find(
     (event: any) => event.eventId === bookedEventId
   );
