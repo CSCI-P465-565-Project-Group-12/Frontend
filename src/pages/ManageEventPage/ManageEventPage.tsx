@@ -72,7 +72,7 @@ const ManageEventPage: React.FC = () => {
             <p>
               Location: <b>{bookedEvent.eventLocation}</b>
             </p>
-            <button
+            {/* <button
               onClick={() => {
                 navigate(`/event/${bookedEvent.eventName}`, {
                   state: { event: bookedEvent },
@@ -80,7 +80,7 @@ const ManageEventPage: React.FC = () => {
               }}
             >
               View more details
-            </button>
+            </button> */}
           </div>
           <div className="manageOptions-container">
             <h2>Manage Options</h2>
