@@ -204,11 +204,7 @@ const useApi = () => {
   };
 
   const getAllVenues = async () => {
-    const response = await axios.get(vabApi + "venues", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await axios.get(vabApi + "venues");
     // console.log(response.data);
     console.log(response);
 
@@ -217,11 +213,7 @@ const useApi = () => {
 
   // events api
   const getAllEvents = async () => {
-    const response = await axios.get(vabApi + "activities", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await axios.get(vabApi + "activities");
     return response.data;
   };
 
