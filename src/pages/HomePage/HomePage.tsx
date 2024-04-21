@@ -52,6 +52,19 @@ const HomePage = () => {
       <HeroSection />
       {/* <UpcomingEventsSection events={requiredColsEvents} />
       <BestSellingEventsSection events={events} venues={venues} /> */}
+      {/* create a div to show "We are working on it with a text and bootstrap icon" */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "50vh",
+          fontSize: "2rem",
+        }}
+      >
+        <i className="bi bi-gear-fill" />
+        <p>We are working on a technical issue, Thank you for your patience.</p>
+      </div>
       <Footer />
       <LoadingModal message="Loading Events.." />
     </>
